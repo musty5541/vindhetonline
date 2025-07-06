@@ -29,69 +29,48 @@
   </form>
 
   <p><a href="index.html">← Terug naar Home</a></p>
+<script>
+document.getElementById("advertentieForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-  <script>
-    // Foto önizleme
-    document.getElementById("photos").addEventListener("change", function (event) {
-      const files = event.target.files;
-      const previewContainer = document.getElementById("previewContainer");
-      previewContainer.innerHTML = "";
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+  const files = document.getElementById("photos").files;
 
-      if (files.length > 15) {
-        alert("En fazla 15 fotoğraf yükleyebilirsiniz.");
-        event.target.value = ""; // Reset
-        return;
-      }
+  if (files.length > 15) {
+    alert("En fazla 15 fotoğraf yükleyebilirsiniz.");
+    return;
+  }
 
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = document.createElement("img");
-          img.src = e.target.result;
-          img.style.maxWidth = "100px";
-          img.style.maxHeight = "100px";
-          img.style.border = "1px solid #ccc";
-          previewContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      });
+  // Fotoğrafları base64 olarak oku
+  const imagePromises = Array.from(files).map(file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
+  });
 
-    // Form gönderme
-    document.getElementById("advertentieForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+  Promise.all(imagePromises).then(images => {
+    const newAd = {
+      title,
+      description,
+      price,
+      images // bu artık bir dizi (array) olacak
+    };
 
-      const title = document.getElementById("title").value;
-      const description = document.getElementById("description").value;
-      const price = document.getElementById("price").value;
-      const files = document.getElementById("photos").files;
+    const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
+    ads.push(newAd);
+    localStorage.setItem("advertenties", JSON.stringify(ads));
 
-      if (files.length === 0) {
-        alert("Lütfen en az 1 fotoğraf seçin.");
-        return;
-      }
+    alert("İlan başarıyla kaydedildi!");
+    window.location.href = "listings.html";
+  });
+});
+</script>
 
-      // Fotoğrafları base64 olarak oku
-      const imagePromises = Array.from(files).map(file => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = () => reject();
-          reader.readAsDataURL(file);
-        });
-      });
-
-      Promise.all(imagePromises).then(images => {
-        const newAd = { title, description, price, images };
-
-        const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
-        ads.push(newAd);
-        localStorage.setItem("advertenties", JSON.stringify(ads));
-
-        alert("İlan başarıyla kaydedildi!");
-        window.location.href = "listings.html";
-      });
-    });
-  </script>
+   
 </body>
 </html>
