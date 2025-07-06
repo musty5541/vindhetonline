@@ -80,5 +80,22 @@
 
     <button type="submit">Filter toepassen</button>
   </form>
+<script>
+  // URL'den kategori parametresini al
+  const urlParams = new URLSearchParams(window.location.search);
+  const kategori = urlParams.get('kategorie');
+
+  // Eğer kategori varsa, filtreleme işlemini başlat
+  if (kategori) {
+    // Örneğin sadece o kategoriye ait ilanları göster
+    const ilanlar = document.querySelectorAll(".ilan");
+    ilanlar.forEach((ilan) => {
+      const ilanKategori = ilan.getAttribute("data-kategori");
+      if (ilanKategori !== kategori) {
+        ilan.style.display = "none";
+      }
+    });
+  }
+</script>
 </body>
 </html>
