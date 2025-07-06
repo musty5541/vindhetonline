@@ -2,64 +2,141 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plaats een advertentie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plaats Advertentie</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
     #previewContainer {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 10px;
     }
-    #previewContainer img {
+
+    .imageWrapper {
+      position: relative;
+    }
+
+    .imageWrapper img {
       max-width: 100px;
       border: 1px solid #ccc;
-      padding: 5px;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .deleteBtn {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button[type="submit"] {
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Plaats een advertentie</h1>
-  <p>Hier kun je jouw advertentie toevoegen.</p>
 
-  <form id="advertentieForm">
-    <label for="title">İlan Başlığı:</label><br />
-    <input type="text" id="title" name="title" required /><br /><br />
+  <h2>Plaats een Advertentie</h2>
+  <form id="adForm">
+    <label for="title">Titel van advertentie:</label>
+    <input type="text" id="title" name="title" required />
 
-    <label for="description">Açıklama:</label><br />
-    <textarea id="description" name="description" required></textarea><br /><br />
+    <label for="description">Beschrijving:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
 
-    <label for="price">Fiyat (€):</label><br />
-    <input type="number" id="price" name="price" required /><br /><br />
+    <label for="price">Prijs (€):</label>
+    <input type="number" id="price" name="price" required />
 
-    <label for="photos">Fotoğraflar (en fazla 15):</label><br />
-    <input type="file" id="photos" name="photos" accept="image/*" multiple /><br /><br />
+    <label for="photos">Foto's (maximaal 15):</label>
+    <input type="file" id="photos" name="photos" accept="image/*" multiple />
 
-    <div id="previewContainer"></div><br />
+    <p style="font-size: 0.9em; color: #555;">
+      📸 Tip: Houd lang ingedrukt of activeer meerdere selectie om meerdere foto's uit de galerij te kiezen.
+    </p>
 
-    <button type="submit">İlanı Gönder</button>
+    <div id="previewContainer"></div>
+
+    <button type="submit">Advertentie Plaatsen</button>
   </form>
-
-  <p><a href="index.html">← Terug naar Home</a></p>
 
   <script>
     const photoInput = document.getElementById("photos");
     const previewContainer = document.getElementById("previewContainer");
+    let selectedFiles = [];
 
-    photoInput.addEventListener("change", function (event) {
+    photoInput.addEventListener("change", () => {
+      const files = Array.from(photoInput.files);
+      selectedFiles = files.slice(0, 15);
+      updatePreview();
+    });
+
+    function updatePreview() {
       previewContainer.innerHTML = "";
-      const files = Array.from(event.target.files).slice(0, 15); // Maksimum 15 dosya
 
-      files.forEach((file) => {
+      selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = function (e) {
+          const wrapper = document.createElement("div");
+          wrapper.className = "imageWrapper";
+
           const img = document.createElement("img");
           img.src = e.target.result;
-          previewContainer.appendChild(img);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.innerHTML = "❌";
+          deleteBtn.className = "deleteBtn";
+          deleteBtn.onclick = function () {
+            selectedFiles.splice(index, 1);
+            updatePreview();
+          };
+
+          wrapper.appendChild(img);
+          wrapper.appendChild(deleteBtn);
+          previewContainer.appendChild(wrapper);
         };
         reader.readAsDataURL(file);
       });
+    }
+
+    document.getElementById("adForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("Advertentie succesvol voorbereid (testmodus).");
     });
   </script>
+
 </body>
 </html>
