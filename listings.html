@@ -1,68 +1,61 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>İlanlar</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advertenties</title>
 </head>
 <body>
-  <!-- FILTRE PANELI -->
-<div class="filter-container" style="padding: 20px; max-width: 800px; margin: auto;">
-  <h2>Filter</h2>
-  
-  <form id="filterForm">
 
-    <!-- Marka -->
-    <label for="merk">Merk:</label>
-    <select id="merk" name="merk">
+  <h1>Zoek advertenties</h1>
+
+  <form id="filterForm">
+    <label>Merk:</label>
+    <select name="merk">
       <option value="">Alle</option>
+      <option value="Audi">Audi</option>
       <option value="BMW">BMW</option>
       <option value="Mercedes">Mercedes</option>
-      <option value="Volkswagen">Volkswagen</option>
-      <option value="Audi">Audi</option>
-    </select><br><br>
+    </select><br /><br />
 
-    <!-- Model -->
-    <label for="model">Model:</label>
-    <input type="text" id="model" name="model" placeholder="Bijv. C180"><br><br>
-
-    <!-- KM -->
-    <label>Kilometerstand:</label>
-    <input type="number" name="kmMin" placeholder="Min"> -
-    <input type="number" name="kmMax" placeholder="Max"><br><br>
-
-    <!-- Bouwjaar -->
-    <label>Bouwjaar:</label>
-    <input type="number" name="jaarMin" placeholder="Vanaf"> -
-    <input type="number" name="jaarMax" placeholder="Tot"><br><br>
-
-    <!-- Versnellingsbak -->
-    <label>Versnellingsbak:</label>
-    <select name="versnellingsbak">
+    <label>Model:</label>
+    <select name="model">
       <option value="">Alle</option>
-      <option value="Handgeschakeld">Handgeschakeld</option>
-      <option value="Automatisch">Automatisch</option>
-    </select><br><br>
+      <option value="A3">A3</option>
+      <option value="X5">X5</option>
+      <option value="C-Klasse">C-Klasse</option>
+    </select><br /><br />
 
-    <!-- Brandstof -->
+    <label>Prijs (max):</label>
+    <select name="prijs">
+      <option value="">Alle</option>
+      <option value="1000">Tot €1.000</option>
+      <option value="5000">Tot €5.000</option>
+      <option value="10000">Tot €10.000</option>
+    </select><br /><br />
+
     <label>Brandstof:</label>
     <select name="brandstof">
       <option value="">Alle</option>
       <option value="Benzine">Benzine</option>
       <option value="Diesel">Diesel</option>
       <option value="Hybride">Hybride</option>
-    </select><br><br>
+    </select><br /><br />
 
     <button type="submit">Filter toepassen</button>
   </form>
-</div>
-  </script><script>
-  document.getElementById('filterForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert("Filter wordt toegepast (demo)");
-    // Buraya filtreleme fonksiyonu bağlanacak
-  });
-</script>
+
+  <div id="resultaatContainer">
+    <!-- Hier komen de gefilterde resultaten -->
+  </div>
+
+  <script>
+    document.getElementById('filterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("Filter wordt toegepast");
+      // Hier komt later de filter functionaliteit
+    });
+  </script>
+
 </body>
 </html>
