@@ -7,6 +7,25 @@
 <body>
   <h1>Plaats een advertentie</h1>
   <p>Hier kun je jouw advertentie toevoegen.</p>
+
+  <form action="#" method="post">
+    <label for="title">İlan Başlığı:</label><br>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="description">Açıklama:</label><br>
+    <textarea id="description" name="description" rows="4" required></textarea><br><br>
+
+    <label for="price">Fiyat (€):</label><br>
+    <input type="number" id="price" name="price" required><br><br>
+
+    <label for="image">Resim URL'si:</label><br>
+    <input type="url" id="image" name="image"><br><br>
+
+    <button type="submit">İlanı Gönder</button>
+  </form>
+
+  <br>
   <a href="index.html">← Terug naar Home</a>
 </body>
 </html>
+
