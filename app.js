@@ -16,7 +16,7 @@ const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value) || In
           (brandstof === "Alle" || listing.brandstof === brandstof) &&
           (transmissie === "Alle" || listing.transmissie === transmissie) &&
           listing.jaar >= jaarMin &&
-          listing.km <= kmMax &&
+          listing.jaar <= bouwjaarTot &&
           listing.prijs <= prijsMax
         );
       });
