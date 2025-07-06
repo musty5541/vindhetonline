@@ -6,18 +6,40 @@
   <title>VindHetOnline - Advertenties</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
       padding: 20px;
     }
     .ad {
       border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    #category-filter {
+      margin-bottom: 30px;
     }
   </style>
 </head>
 <body>
-  <h2>Recente Advertenties</h2>
+  <h1>Recente Advertenties</h1>
+
+  <!-- Kategori filtreleme -->
+  <div id="category-filter">
+    <label for="category">Categorie:</label>
+    <select id="category" onchange="filterListings()">
+      <option value="all">Alles</option>
+      <option value="auto">Auto</option>
+      <option value="emlak">Emlak</option>
+      <option value="elektronik">Elektronik</option>
+      <option value="giyim">Giyim</option>
+      <option value="mobilya">Mobilya</option>
+      <option value="oyuncak">Oyuncak</option>
+      <option value="bahce">Bahçe</option>
+      <option value="evcil">Evcil Hayvanlar</option>
+      <option value="muzik">Müzik Enstrümanları</option>
+      <option value="diger">Diğer</option>
+    </select>
+  </div>
 
   <!-- İlanlar -->
   <div class="ad" data-kategori="auto">
@@ -40,26 +62,24 @@
     <p>Kategori: Auto</p>
   </div>
 
-  <div class="ad" data-kategori="muzik">
-    <h3>Yamaha Gitar</h3>
-    <p>Kategori: Müzik</p>
-  </div>
-
-  <!-- JavaScript ile URL'den kategoriye göre filtreleme -->
+  <!-- Filtreleme Scripti -->
   <script>
-    // URL'den kategori parametresini al
+    function filterListings() {
+      const selected = document.getElementById("category").value;
+      const ads = document.querySelectorAll(".ad");
+
+      ads.forEach(ad => {
+        const kategori = ad.getAttribute("data-kategori");
+        ad.style.display = (selected === "all" || kategori === selected) ? "block" : "none";
+      });
+    }
+
+    // Sayfa ilk açıldığında URL'deki kategoriye göre filtrele
     const urlParams = new URLSearchParams(window.location.search);
     const kategoriParam = urlParams.get('kategorie');
-
-    // Eğer bir kategori parametresi varsa filtrele
     if (kategoriParam) {
-      const ilanlar = document.querySelectorAll('.ad');
-      ilanlar.forEach((ilan) => {
-        const kategori = ilan.getAttribute('data-kategori');
-        if (kategori !== kategoriParam) {
-          ilan.style.display = 'none';
-        }
-      });
+      document.getElementById("category").value = kategoriParam;
+      filterListings();
     }
   </script>
 </body>
