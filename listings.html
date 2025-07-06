@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -16,6 +17,26 @@
       <option value="Audi">Audi</option>
       <option value="BMW">BMW</option>
       <option value="Mercedes">Mercedes</option>
+      <option value="Volkswagen">Volkswagen</option>
+      <option value="Opel">Opel</option>
+      <option value="Ford">Ford</option>
+      <option value="Peugeot">Peugeot</option>
+      <option value="Renault">Renault</option>
+      <option value="Citroën">Citroën</option>
+      <option value="Toyota">Toyota</option>
+      <option value="Honda">Honda</option>
+      <option value="Hyundai">Hyundai</option>
+      <option value="Kia">Kia</option>
+      <option value="Mazda">Mazda</option>
+      <option value="Volvo">Volvo</option>
+      <option value="Nissan">Nissan</option>
+      <option value="Fiat">Fiat</option>
+      <option value="Skoda">Skoda</option>
+      <option value="Seat">Seat</option>
+      <option value="Mini">Mini</option>
+      <option value="Dacia">Dacia</option>
+      <option value="Suzuki">Suzuki</option>
+      <option value="Chevrolet">Chevrolet</option>
     </select><br /><br />
 
     <label>Model:</label>
@@ -46,14 +67,66 @@
   </form>
 
   <div id="resultaatContainer">
-    <!-- Hier komen de gefilterde resultaten -->
+    <!-- Gefilterde resultaten verschijnen hier -->
   </div>
 
   <script>
     document.getElementById('filterForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      alert("Filter wordt toegepast");
-      // Hier komt later de filter functionaliteit
+
+      const advertenties = [
+        {
+          merk: "Audi",
+          model: "A3",
+          prijs: 4500,
+          brandstof: "Benzine",
+          foto: "https://via.placeholder.com/150?text=Audi+A3"
+        },
+        {
+          merk: "BMW",
+          model: "X5",
+          prijs: 8500,
+          brandstof: "Diesel",
+          foto: "https://via.placeholder.com/150?text=BMW+X5"
+        },
+        {
+          merk: "Mercedes",
+          model: "C-Klasse",
+          prijs: 6500,
+          brandstof: "Hybride",
+          foto: "https://via.placeholder.com/150?text=Mercedes+C"
+        }
+      ];
+
+      const merk = document.querySelector('[name="merk"]').value;
+      const model = document.querySelector('[name="model"]').value;
+      const prijs = document.querySelector('[name="prijs"]').value;
+      const brandstof = document.querySelector('[name="brandstof"]').value;
+
+      const gefilterd = advertenties.filter(ad => {
+        return (!merk || ad.merk === merk) &&
+               (!model || ad.model === model) &&
+               (!prijs || ad.prijs <= parseInt(prijs)) &&
+               (!brandstof || ad.brandstof === brandstof);
+      });
+
+      const container = document.getElementById("resultaatContainer");
+      container.innerHTML = "";
+
+      if (gefilterd.length === 0) {
+        container.innerHTML = "<p>Geen resultaten gevonden.</p>";
+      } else {
+        gefilterd.forEach(ad => {
+          const div = document.createElement("div");
+          div.innerHTML = `
+            <img src="${ad.foto}" width="150"><br>
+            <strong>${ad.merk} ${ad.model}</strong><br>
+            Prijs: €${ad.prijs}<br>
+            Brandstof: ${ad.brandstof}<br><br>
+          `;
+          container.appendChild(div);
+        });
+      }
     });
   </script>
 
