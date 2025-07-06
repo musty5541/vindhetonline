@@ -1,25 +1,71 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Plaats een advertentie</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #0077cc;
+    }
+    form {
+      background: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
 </head>
 <body>
 
+  <h2>Plaats een advertentie</h2>
   <form id="adForm">
-    <!-- Başlık alanı -->
     <label for="title">Titel:</label>
-    <input type="text" id="title" name="title">
+    <input type="text" id="title" name="title" required>
 
-    <!-- Açıklama alanı -->
     <label for="description">Beschrijving:</label>
-    <textarea id="description" name="description"></textarea>
+    <textarea id="description" name="description" rows="4" required></textarea>
 
-    <!-- 📍 BURAYA KATEGORİ EKLİYORUZ -->
     <label for="categorie">Categorie:</label>
-    <select id="categorie" name="categorie">
+    <select id="categorie" name="categorie" required>
       <option value="">Selecteer een categorie</option>
       <option value="auto">Auto</option>
       <option value="vastgoed">Vastgoed</option>
