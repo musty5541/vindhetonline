@@ -1,8 +1,7 @@
-// js/app.js
-
 document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const selectedCategory = params.get("category") || "";
   const listingsContainer = document.getElementById("listings-container");
-  const categoryFilter = document.getElementById("category");
   const searchInput = document.getElementById("search-input");
   const transmissionFilter = document.getElementById("transmission");
   const yearFromFilter = document.getElementById("year-from");
@@ -13,63 +12,72 @@ document.addEventListener("DOMContentLoaded", () => {
   const fuelFilter = document.getElementById("fuel");
 
   fetch("../data/listings.json")
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-      renderListings(data);
-
-      function applyFilters() {
-        const filtered = data.filter(listing => {
-          const categoryMatch = categoryFilter.value === "" || listing.category === categoryFilter.value;
-          const searchMatch = searchInput.value === "" || listing.title.toLowerCase().includes(searchInput.value.toLowerCase());
-          const transmissionMatch = transmissionFilter.value === "" || listing.transmission === transmissionFilter.value;
-          const yearFromMatch = yearFromFilter.value === "" || parseInt(listing.year) >= parseInt(yearFromFilter.value);
-          const yearToMatch = yearToFilter.value === "" || parseInt(listing.year) <= parseInt(yearToFilter.value);
-          const priceMinMatch = priceMinFilter.value === "" || parseInt(listing.price) >= parseInt(priceMinFilter.value);
-          const priceMaxMatch = priceMaxFilter.value === "" || parseInt(listing.price) <= parseInt(priceMaxFilter.value);
-          const kmMatch = kmMaxFilter.value === "" || parseInt(listing.kilometers) <= parseInt(kmMaxFilter.value);
-          const fuelMatch = fuelFilter.value === "" || listing.fuel === fuelFilter.value;
-
-          return categoryMatch && searchMatch && transmissionMatch && yearFromMatch && yearToMatch &&
-                 priceMinMatch && priceMaxMatch && kmMatch && fuelMatch;
-        });
-
-        renderListings(filtered);
+      if (selectedCategory) {
+        document.getElementById("category").value = selectedCategory;
       }
 
-      function renderListings(listings) {
-        listingsContainer.innerHTML = "";
-        if (listings.length === 0) {
-          listingsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
-          return;
-        }
+      applyFilters(data);
 
-        listings.forEach(listing => {
-          const card = document.createElement("div");
-          card.classList.add("listing-card");
-
-          card.innerHTML = `
-            <img src="${listing.image}" alt="${listing.title}">
-            <h3>${listing.title}</h3>
-            <p>Prijs: €${listing.price}</p>
-            <p>Bouwjaar: ${listing.year}</p>
-            <p>KM: ${listing.kilometers}</p>
-            <p>Transmissie: ${listing.transmission}</p>
-            <p>Brandstof: ${listing.fuel}</p>
-            <p>Categorie: ${listing.category}</p>
-          `;
-
-          listingsContainer.appendChild(card);
-        });
-      }
-
-      // Tüm filtre olaylarını dinle
       [
-        categoryFilter, searchInput, transmissionFilter,
-        yearFromFilter, yearToFilter,
-        priceMinFilter, priceMaxFilter,
-        kmMaxFilter, fuelFilter
+        searchInput, transmissionFilter, yearFromFilter, yearToFilter,
+        priceMinFilter, priceMaxFilter, kmMaxFilter, fuelFilter
       ].forEach(input => {
-        input.addEventListener("input", applyFilters);
+        input.addEventListener("input", () => applyFilters(data));
       });
     });
+
+  function applyFilters(data) {
+    const query = searchInput.value.toLowerCase();
+    const category = selectedCategory;
+    const transmission = transmissionFilter.value;
+    const yearFrom = yearFromFilter.value;
+    const yearTo = yearToFilter.value;
+    const priceMin = priceMinFilter.value;
+    const priceMax = priceMaxFilter.value;
+    const kmMax = kmMaxFilter.value;
+    const fuel = fuelFilter.value;
+
+    const filtered = data.filter(item => {
+      return (
+        (!category || item.category === category) &&
+        (!query || item.title.toLowerCase().includes(query)) &&
+        (!transmission || item.transmission === transmission) &&
+        (!fuel || item.fuel === fuel) &&
+        (!yearFrom || parseInt(item.year) >= parseInt(yearFrom)) &&
+        (!yearTo || parseInt(item.year) <= parseInt(yearTo)) &&
+        (!priceMin || parseInt(item.price) >= parseInt(priceMin)) &&
+        (!priceMax || parseInt(item.price) <= parseInt(priceMax)) &&
+        (!kmMax || parseInt(item.kilometers) <= parseInt(kmMax))
+      );
+    });
+
+    renderListings(filtered);
+  }
+
+  function renderListings(listings) {
+    listingsContainer.innerHTML = "";
+
+    if (listings.length === 0) {
+      listingsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
+      return;
+    }
+
+    listings.forEach(item => {
+      const div = document.createElement("div");
+      div.classList.add("listing-card");
+      div.innerHTML = `
+        <img src="${item.image}" alt="${item.title}">
+        <h3>${item.title}</h3>
+        <p>Prijs: €${item.price}</p>
+        <p>Bouwjaar: ${item.year}</p>
+        <p>KM: ${item.kilometers}</p>
+        <p>Transmissie: ${item.transmission}</p>
+        <p>Brandstof: ${item.fuel}</p>
+        <p>Categorie: ${item.category}</p>
+      `;
+      listingsContainer.appendChild(div);
+    });
+  }
 });
