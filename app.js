@@ -18,6 +18,7 @@ const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value) || In
   listing.jaar >= jaarMin &&
   listing.jaar <= bouwjaarTot &&
   listing.km <= kmMax &&
+  listing.prijs >= prijsMin &&
   listing.prijs <= prijsMax
 );
       });
