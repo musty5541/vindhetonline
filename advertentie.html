@@ -20,7 +20,7 @@
     <label for="price">Fiyat (€):</label><br />
     <input type="number" id="price" name="price" required /><br /><br />
 
-    <label for="photos">Fotoğraflar (max 15):</label><br />
+    <label for="photos">Fotoğraflar (en fazla 15):</label><br />
     <input type="file" id="photos" name="photos" accept="image/*" multiple /><br /><br />
 
     <div id="previewContainer" style="display: flex; flex-wrap: wrap; gap: 10px;"></div><br />
@@ -29,48 +29,57 @@
   </form>
 
   <p><a href="index.html">← Terug naar Home</a></p>
-<script>
-document.getElementById("advertentieForm").addEventListener("submit", function(e) {
-  e.preventDefault();
 
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const price = document.getElementById("price").value;
-  const files = document.getElementById("photos").files;
+  <script>
+    const photoInput = document.getElementById("photos");
+    const previewContainer = document.getElementById("previewContainer");
 
-  if (files.length > 15) {
-    alert("En fazla 15 fotoğraf yükleyebilirsiniz.");
-    return;
-  }
+    photoInput.addEventListener("change", function () {
+      previewContainer.innerHTML = "";
+      const files = Array.from(photoInput.files).slice(0, 15); // En fazla 15 dosya
 
-  // Fotoğrafları base64 olarak oku
-  const imagePromises = Array.from(files).map(file => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.style.maxWidth = "100px";
+          img.style.border = "1px solid #ccc";
+          img.style.padding = "5px";
+          previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
     });
-  });
 
-  Promise.all(imagePromises).then(images => {
-    const newAd = {
-      title,
-      description,
-      price,
-      images // bu artık bir dizi (array) olacak
-    };
+    document.getElementById("advertentieForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
-    ads.push(newAd);
-    localStorage.setItem("advertenties", JSON.stringify(ads));
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const price = document.getElementById("price").value;
+      const files = Array.from(photoInput.files).slice(0, 15);
 
-    alert("İlan başarıyla kaydedildi!");
-    window.location.href = "listings.html";
-  });
-});
-</script>
+      const imagePromises = files.map(file => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            resolve(e.target.result); // base64 string
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      });
 
-   
+      Promise.all(imagePromises).then(images => {
+        const newAd = { title, description, price, images };
+        const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
+        ads.push(newAd);
+        localStorage.setItem("advertenties", JSON.stringify(ads));
+        alert("İlan başarıyla kaydedildi!");
+        window.location.href = "listings.html";
+      });
+    });
+  </script>
 </body>
 </html>
