@@ -1,117 +1,66 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Recente Advertenties</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VindHetOnline - Advertenties</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #fff;
     }
-    form {
-      max-width: 400px;
-      margin: auto;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 20px;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
+    .ad {
       border: 1px solid #ccc;
-    }
-    button {
-      width: 100%;
-      background-color: #111;
-      color: white;
-      padding: 12px;
-      margin-top: 25px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <h2>Recente Advertenties</h2>
 
-  <form name="auto-filter" method="POST" data-netlify="true">
-    <input type="hidden" name="form-name" value="auto-filter">
+  <!-- İlanlar -->
+  <div class="ad" data-kategori="auto">
+    <h3>Opel Astra 2015</h3>
+    <p>Kategori: Auto</p>
+  </div>
 
-    <label for="merk">Merk:</label>
-    <input type="text" id="merk" name="merk" placeholder="Bv. Volkswagen">
+  <div class="ad" data-kategori="emlak">
+    <h3>3+1 Daire Gent</h3>
+    <p>Kategori: Emlak</p>
+  </div>
 
-    <label for="brandstof">Brandstof:</label>
-    <select id="brandstof" name="brandstof">
-      <option value="Alle">Alle</option>
-      <option value="Benzine">Benzine</option>
-      <option value="Diesel">Diesel</option>
-      <option value="Elektrisch">Elektrisch</option>
-      <option value="Hybride">Hybride</option>
-    </select>
+  <div class="ad" data-kategori="giyim">
+    <h3>Marka Elbise</h3>
+    <p>Kategori: Giyim</p>
+  </div>
 
-    <label for="transmissie">Transmissie:</label>
-    <select id="transmissie" name="transmissie">
-      <option value="Alle">Alle</option>
-      <option value="Manueel">Manueel</option>
-      <option value="Automaat">Automaat</option>
-    </select>
+  <div class="ad" data-kategori="auto">
+    <h3>BMW 320d</h3>
+    <p>Kategori: Auto</p>
+  </div>
 
-    <label for="jaar_vanaf">Jaar vanaf:</label>
-    <input type="text" id="jaar_vanaf" name="jaar_vanaf" placeholder="Bv. 2015">
+  <div class="ad" data-kategori="muzik">
+    <h3>Yamaha Gitar</h3>
+    <p>Kategori: Müzik</p>
+  </div>
 
-    <label for="jaar_tot">Jaar tot:</label>
-    <input type="text" id="jaar_tot" name="jaar_tot" placeholder="Bv. 2020">
+  <!-- JavaScript ile URL'den kategoriye göre filtreleme -->
+  <script>
+    // URL'den kategori parametresini al
+    const urlParams = new URLSearchParams(window.location.search);
+    const kategoriParam = urlParams.get('categorie');
 
-    <label for="kilometerstand">Kilometerstand (max):</label>
-    <input type="text" id="kilometerstand" name="kilometerstand" placeholder="Bv. 150000">
-
-    <label for="prijs_min">Prijs (min):</label>
-    <input type="text" id="prijs_min" name="prijs_min" placeholder="Bv. 1000">
-
-    <label for="prijs_max">Prijs (max):</label>
-    <input type="text" id="prijs_max" name="prijs_max" placeholder="Bv. 10000">
-
-    <button type="submit">Filter toepassen</button>
-  </form>
-<script>
-  // URL'den kategori parametresini al
-  const urlParams = new URLSearchParams(window.location.search);
-  const kategori = urlParams.get('kategorie');
-
-  // Eğer kategori varsa, filtreleme işlemini başlat
-  if (kategori) {
-    // Örneğin sadece o kategoriye ait ilanları göster
-    const ilanlar = document.querySelectorAll(".ilan");
-    ilanlar.forEach((ilan) => {
-      const ilanKategori = ilan.getAttribute("data-kategori");
-      if (ilanKategori !== kategori) {
-        ilan.style.display = "none";
-      }
-    });
-  }
-</script>
-</body><!-- Kategori Filtresi -->
-<div id="category-filter" style="margin: 20px;">
-  <label for="category">Categorie:</label>
-  <select id="category" onchange="filterListings()">
-    <option value="all">Alles</option>
-    <option value="auto">Auto</option>
-    <option value="emlak">Emlak</option>
-    <option value="elektronik">Elektronik</option>
-    <option value="giyim">Giyim</option>
-    <option value="mobilya">Mobilya</option>
-    <option value="oyuncak">Oyuncak</option>
-    <option value="bahce">Bahçe</option>
-    <option value="evcil">Evcil Hayvanlar</option>
-    <option value="muzik">Müzik Enstrümanları</option>
-    <option value="diger">Diğer</option>
-  </select>
-</div>
+    // Eğer bir kategori parametresi varsa filtrele
+    if (kategoriParam) {
+      const ilanlar = document.querySelectorAll('.ad');
+      ilanlar.forEach((ilan) => {
+        const kategori = ilan.getAttribute('data-kategori');
+        if (kategori !== kategoriParam) {
+          ilan.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
 </html>
