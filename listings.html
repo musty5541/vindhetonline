@@ -7,31 +7,62 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>İlanlar</h1>
-  <div id="adsList"></div>
+  <!-- FILTRE PANELI -->
+<div class="filter-container" style="padding: 20px; max-width: 800px; margin: auto;">
+  <h2>Filter</h2>
+  
+  <form id="filterForm">
 
-  <p><a href="index.html">← Terug naar Home</a></p>
+    <!-- Marka -->
+    <label for="merk">Merk:</label>
+    <select id="merk" name="merk">
+      <option value="">Alle</option>
+      <option value="BMW">BMW</option>
+      <option value="Mercedes">Mercedes</option>
+      <option value="Volkswagen">Volkswagen</option>
+      <option value="Audi">Audi</option>
+    </select><br><br>
 
-  <script>
-    const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
-    const adsList = document.getElementById("adsList");
+    <!-- Model -->
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model" placeholder="Bijv. C180"><br><br>
 
-    if (ads.length === 0) {
-      adsList.innerHTML = "<p>Hiç ilan bulunamadı.</p>";
-    } else {
-      ads.forEach(ad => {
-        const adDiv = document.createElement("div");
-        adDiv.classList.add("ad-item");
-        adDiv.innerHTML = `
-          <h2>${ad.title}</h2>
-          <p><strong>Açıklama:</strong> ${ad.description}</p>
-          <p><strong>Fiyat:</strong> €${ad.price}</p>
-          ${ad.image ? `<img src="${ad.image}" alt="İlan Görseli" style="max-width:300px;">` : ""}
-          <hr>
-        `;
-        adsList.appendChild(adDiv);
-      });
-    }
-  </script>
+    <!-- KM -->
+    <label>Kilometerstand:</label>
+    <input type="number" name="kmMin" placeholder="Min"> -
+    <input type="number" name="kmMax" placeholder="Max"><br><br>
+
+    <!-- Bouwjaar -->
+    <label>Bouwjaar:</label>
+    <input type="number" name="jaarMin" placeholder="Vanaf"> -
+    <input type="number" name="jaarMax" placeholder="Tot"><br><br>
+
+    <!-- Versnellingsbak -->
+    <label>Versnellingsbak:</label>
+    <select name="versnellingsbak">
+      <option value="">Alle</option>
+      <option value="Handgeschakeld">Handgeschakeld</option>
+      <option value="Automatisch">Automatisch</option>
+    </select><br><br>
+
+    <!-- Brandstof -->
+    <label>Brandstof:</label>
+    <select name="brandstof">
+      <option value="">Alle</option>
+      <option value="Benzine">Benzine</option>
+      <option value="Diesel">Diesel</option>
+      <option value="Hybride">Hybride</option>
+    </select><br><br>
+
+    <button type="submit">Filter toepassen</button>
+  </form>
+</div>
+  </script><script>
+  document.getElementById('filterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert("Filter wordt toegepast (demo)");
+    // Buraya filtreleme fonksiyonu bağlanacak
+  });
+</script>
 </body>
 </html>
