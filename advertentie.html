@@ -28,31 +28,51 @@
   </form>
 
   <p><a href="index.html">← Terug naar Home</a></p>
-
-  <script>
-    document.getElementById("advertentieForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const title = document.getElementById("title").value;
-      const description = document.getElementById("description").value;
-      const price = document.getElementById("price").value;
-      const image = document.getElementById("image").value;
-
-      const newAd = {
-        title,
-        description,
-        price,
-        image
+<script>
+  // Önizleme resmi göster
+  document.getElementById("photo").addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("preview").src = e.target.result;
+        document.getElementById("preview").style.display = "block";
       };
+      reader.readAsDataURL(file);
+    }
+  });
 
-      let ads = JSON.parse(localStorage.getItem("advertenties")) || [];
-      ads.push(newAd);
-      localStorage.setItem("advertenties", JSON.stringify(ads));
+  // Form gönderimi
+  document.getElementById("advertentieForm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      alert("İlan başarıyla kaydedildi!");
-      window.location.href = "listings.html";
-    });
-  </script>
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const price = document.getElementById("price").value;
+    const photoInput = document.getElementById("photo");
+
+    if (photoInput.files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const image = event.target.result;
+
+        const newAd = { title, description, price, image };
+        let ads = JSON.parse(localStorage.getItem("advertenties")) || [];
+        ads.push(newAd);
+        localStorage.setItem("advertenties", JSON.stringify(ads));
+
+        alert("İlan başarıyla kaydedildi!");
+        window.location.href = "listings.html";
+      };
+      reader.readAsDataURL(photoInput.files[0]);
+    } else {
+      alert("Lütfen bir resim yükleyin!");
+    }
+  });
+</script>
+ 
+   
+
 </body>
 </html>
 
