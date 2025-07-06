@@ -4,7 +4,53 @@
   <meta charset="UTF-8">
   <title>Plaats een advertentie</title>
 </head>
-<body>
+<body><body>
+  <h1>Plaats een advertentie</h1>
+  <p>Hier kun je jouw advertentie toevoegen.</p>
+
+  <form id="advertentieForm">
+    <label for="title">İlan Başlığı:</label><br />
+    <input type="text" id="title" name="title" required /><br /><br />
+
+    <label for="description">Açıklama:</label><br />
+    <textarea id="description" name="description" required></textarea><br /><br />
+
+    <label for="price">Fiyat (€):</label><br />
+    <input type="number" id="price" name="price" required /><br /><br />
+
+    <label for="image">Resim URL'si:</label><br />
+    <input type="url" id="image" name="image" /><br /><br />
+
+    <button type="submit">İlanı Gönder</button>
+  </form>
+
+  <p><a href="index.html">← Terug naar Home</a></p>
+
+  <script>
+    document.getElementById("advertentieForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const price = document.getElementById("price").value;
+      const image = document.getElementById("image").value;
+
+      const newAd = {
+        title,
+        description,
+        price,
+        image,
+      };
+
+      let ads = JSON.parse(localStorage.getItem("advertenties")) || [];
+      ads.push(newAd);
+      localStorage.setItem("advertenties", JSON.stringify(ads));
+
+      alert("İlan başarıyla kaydedildi!");
+      window.location.href = "listings.html"; // ilanlar sayfasına yönlendir
+    });
+  </script>
+</body>
   <h1>Plaats een advertentie</h1>
   <p>Hier kun je jouw advertentie toevoegen.</p>
 
