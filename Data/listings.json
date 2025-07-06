@@ -10,5 +10,17 @@
     "fuel": "Benzin",
     "price": 9500,
     "image": "https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_1280.jpg"
+  },
+  {
+    "title": "iPhone 13 Pro",
+    "category": "Elektronica",
+    "brand": "Apple",
+    "model": "13 Pro",
+    "year": 2022,
+    "gearbox": "",
+    "km": 0,
+    "fuel": "",
+    "price": 850,
+    "image": "https://cdn.pixabay.com/photo/2021/09/28/14/42/iphone-6659181_1280.jpg"
   }
 ]
