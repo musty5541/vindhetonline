@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>İlanlar</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>İlanlar</h1>
+  <a href="index.html">← Ana Sayfa</a>
+  <div id="ads-container"></div>
 
+  <script>
+    const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
+    const container = document.getElementById("ads-container");
+
+    if (ads.length === 0) {
+      container.innerHTML = "<p>Henüz ilan yok.</p>";
+    } else {
+      ads.forEach(ad => {
+        const adDiv = document.createElement("div");
+        adDiv.style.border = "1px solid #ccc";
+        adDiv.style.margin = "10px";
+        adDiv.style.padding = "10px";
+        adDiv.innerHTML = `
+          <h2>${ad.title}</h2>
+          <p>${ad.description}</p>
+          <p><strong>Fiyat:</strong> €${ad.price}</p>
+          ${ad.image ? `<img src="${ad.image}" alt="${ad.title}" width="200"/>` : ""}
+        `;
+        container.appendChild(adDiv);
+      });
+    }
+  </script>
+</body>
+</html>
