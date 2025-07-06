@@ -1,31 +1,38 @@
-function filterAdvertenties() {
-  const merk = document.getElementById("merk").value.toLowerCase();
-  const brandstof = document.getElementById("brandstof").value;
-  const transmissie = document.getElementById("transmissie").value;
-  const jaarMin = parseInt(document.getElementById("jaarMin").value) || 0;
-const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value) || Infinity;  
-  const kmMax = parseInt(document.getElementsByName("km")[0].value) || Infinity;
-  const prijsMin = parseInt(document.getElementById("prijsMin").value) || 0;
-  const prijsMax = parseInt(document.getElementById("prijsMax").value) || Infinity;
+function applyFilters(listings) {
+  const category = document.getElementById("category").value;
+  const brand = document.getElementById("brand").value.toLowerCase();
+  const model = document.getElementById("model").value.toLowerCase();
 
-  fetch("https://vindhetonline.netlify.app/.netlify/functions/getData")
-    .then((res) => res.json())
-    .then((data) => {
-      const gefilterdeAdvertenties = data.filter((listing) => {
-      return (
-  (merk === "" || listing.merk.toLowerCase().includes(merk)) &&
-  (brandstof === "Alle" || listing.brandstof === brandstof) &&
-  (transmissie === "Alle" || listing.transmissie === transmissie) &&
-  listing.jaar >= jaarMin &&
-  listing.jaar <= bouwjaarTot &&
-  listing.km <= kmMax &&
-  listing.prijs >= prijsMin &&
-  listing.prijs <= prijsMax
-);
-      });
-
-      advertentiesTonen(gefilterdeAdvertenties);
-    });
+  return listings.filter(item => {
+    return (
+      (category === "" || item.category === category) &&
+      (brand === "" || item.brand.toLowerCase().includes(brand)) &&
+      (model === "" || item.model.toLowerCase().includes(model))
+    );
+  });
 }
-const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value);
-const kmMax = parseInt(document.getElementById("kmMax").value) || Infinity;
+
+function displayListings(listings) {
+  const filtered = applyFilters(listings); // ← filtre uygulanıyor
+  const container = document.getElementById("listings");
+  container.innerHTML = "";
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "listing-card";
+
+    card.innerHTML = `
+      <img src="${item.image}" alt="Foto" onerror="this.src='https://via.placeholder.com/150?text=Foto';" />
+      <h2>${item.title}</h2>
+      <p><strong>Prijs:</strong> €${item.price}</p>
+      <p><strong>Categorie:</strong> ${item.category}</p>
+      ${item.brand ? `<p><strong>Merk:</strong> ${item.brand}</p>` : ""}
+      ${item.model ? `<p><strong>Model:</strong> ${item.model}</p>` : ""}
+      ${item.year ? `<p><strong>Bouwjaar:</strong> ${item.year}</p>` : ""}
+      ${item.km ? `<p><strong>KM:</strong> ${item.km}</p>` : ""}
+      ${item.fuel ? `<p><strong>Brandstof:</strong> ${item.fuel}</p>` : ""}
+    `;
+
+    container.appendChild(card);
+  });
+}
