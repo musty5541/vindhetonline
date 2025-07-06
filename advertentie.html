@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Plaats een advertentie</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body><body>
+<body>
   <h1>Plaats een advertentie</h1>
   <p>Hier kun je jouw advertentie toevoegen.</p>
 
@@ -27,7 +29,7 @@
   <p><a href="index.html">← Terug naar Home</a></p>
 
   <script>
-    document.getElementById("advertentieForm").addEventListener("submit", function (e) {
+    document.getElementById("advertentieForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const title = document.getElementById("title").value;
@@ -39,7 +41,7 @@
         title,
         description,
         price,
-        image,
+        image
       };
 
       let ads = JSON.parse(localStorage.getItem("advertenties")) || [];
@@ -47,30 +49,9 @@
       localStorage.setItem("advertenties", JSON.stringify(ads));
 
       alert("İlan başarıyla kaydedildi!");
-      window.location.href = "listings.html"; // ilanlar sayfasına yönlendir
+      window.location.href = "listings.html";
     });
   </script>
-</body>
-  
-
-  <form action="#" method="post">
-    <label for="title">İlan Başlığı:</label><br>
-    <input type="text" id="title" name="title" required><br><br>
-
-    <label for="description">Açıklama:</label><br>
-    <textarea id="description" name="description" rows="4" required></textarea><br><br>
-
-    <label for="price">Fiyat (€):</label><br>
-    <input type="number" id="price" name="price" required><br><br>
-
-    <label for="image">Resim URL'si:</label><br>
-    <input type="url" id="image" name="image"><br><br>
-
-    <button type="submit">İlanı Gönder</button>
-  </form>
-
-  <br>
-  <a href="index.html">← Terug naar Home</a>
 </body>
 </html>
 
