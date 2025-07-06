@@ -58,35 +58,38 @@
 <body>
   <h1>İlanlar</h1>
   <div id="listings-container"></div>
+<script>
+  fetch('data/listings.json')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('listing-container');
+      container.innerHTML = '';
 
-  <script>
-    fetch('Data/listings.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('listings-container');
-        container.innerHTML = '';
+      data.forEach(item => {
+        const imageUrl = item.image && item.image !== "" ? item.image : 'https://via.placeholder.com/300x200?text=Geen+foto';
 
-        data.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'listing-card';
-          card.innerHTML = `
-            <img src="${item.image}" alt="Foto" />
-            <h2>${item.title}</h2>
-            <p><strong>Prijs:</strong> €${item.price}</p>
-            <p><strong>Categorie:</strong> ${item.category}</p>
-            <p><strong>Merk:</strong> ${item.brand}</p>
-            <p><strong>Model:</strong> ${item.model}</p>
-            <p><strong>Bouwjaar:</strong> ${item.year}</p>
-            <p><strong>KM:</strong> ${item.km}</p>
-            <p><strong>Brandstof:</strong> ${item.fuel}</p>
-            <p><strong>Transmissie:</strong> ${item.gearbox}</p>
-          `;
-          container.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error('Veri yüklenirken hata oluştu:', error);
+        const card = document.createElement('div');
+        card.className = 'listing';
+
+        card.innerHTML = `
+          <h3>${item.title}</h3>
+          <img src="${imageUrl}" alt="Foto" width="300" height="200">
+          <p>Prijs: €${item.price}</p>
+          <p>Merk: ${item.brand || "-"}</p>
+          <p>Model: ${item.model || "-"}</p>
+          <p>Bouwjaar: ${item.year || "-"}</p>
+          <p>Transmissie: ${item.transmission || "-"}</p>
+          <p>KM-stand: ${item.km || "-"}</p>
+          <p>Brandstof: ${item.fuel || "-"}</p>
+          <p>Categorie: ${item.category || "-"}</p>
+        `;
+
+        container.appendChild(card);
       });
-  </script>
+    })
+    .catch(error => {
+      console.error('Fout bij het laden van de data:', error);
+    });
+</script>
 </body>
 </html>
