@@ -1,81 +1,84 @@
-<!DOCTYPE html><html lang="nl">
+<!DOCTYPE html>
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recente Advertenties</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background: #fff;
-    }
-    h2 {
-      font-size: 24px;
-      margin-bottom: 15px;
+      background-color: #fff;
     }
     form {
       max-width: 400px;
-      margin-bottom: 30px;
+      margin: auto;
     }
     label {
-      display: block;
-      margin-top: 10px;
       font-weight: bold;
+      display: block;
+      margin-top: 20px;
     }
     input, select {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-top: 5px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
     button {
-      background-color: #111;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
       width: 100%;
-    }
-    #advertentiesContainer {
-      margin-top: 30px;
+      background-color: #111;
+      color: white;
+      padding: 12px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <h2>Recente Advertenties</h2>  <form id="filterForm">
+  <h2>Recente Advertenties</h2>
+
+  <form name="auto-filter" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="auto-filter">
+
     <label for="merk">Merk:</label>
-    <input type="text" id="merk" placeholder="Bv. Volkswagen" /><label for="brandstof">Brandstof:</label>
-<select id="brandstof">
-  <option value="Alle">Alle</option>
-  <option value="Benzine">Benzine</option>
-  <option value="Diesel">Diesel</option>
-  <option value="Elektrisch">Elektrisch</option>
-  <option value="Hybride">Hybride</option>
-</select>
+    <input type="text" id="merk" name="merk" placeholder="Bv. Volkswagen">
 
-<label for="transmissie">Transmissie:</label>
-<select id="transmissie">
-  <option value="Alle">Alle</option>
-  <option value="Manueel">Manueel</option>
-  <option value="Automatisch">Automatisch</option>
-</select>
+    <label for="brandstof">Brandstof:</label>
+    <select id="brandstof" name="brandstof">
+      <option value="Alle">Alle</option>
+      <option value="Benzine">Benzine</option>
+      <option value="Diesel">Diesel</option>
+      <option value="Elektrisch">Elektrisch</option>
+      <option value="Hybride">Hybride</option>
+    </select>
 
-<label for="jaarMin">Jaar vanaf:</label>
-<input type="number" id="jaarMin" placeholder="Bv. 2015" />
+    <label for="transmissie">Transmissie:</label>
+    <select id="transmissie" name="transmissie">
+      <option value="Alle">Alle</option>
+      <option value="Manueel">Manueel</option>
+      <option value="Automaat">Automaat</option>
+    </select>
 
-<label for="jaarMax">Jaar tot:</label>
-<input type="number" id="jaarMax" placeholder="Bv. 2020" />
+    <label for="jaar_vanaf">Jaar vanaf:</label>
+    <input type="text" id="jaar_vanaf" name="jaar_vanaf" placeholder="Bv. 2015">
 
-<label for="kmMax">Kilometerstand (max):</label>
-<input type="number" id="kmMax" placeholder="Bv. 150000" />
+    <label for="jaar_tot">Jaar tot:</label>
+    <input type="text" id="jaar_tot" name="jaar_tot" placeholder="Bv. 2020">
 
-<label for="prijsMin">Prijs (min):</label>
-<input type="number" id="prijsMin" placeholder="Bv. 1000" />
+    <label for="kilometerstand">Kilometerstand (max):</label>
+    <input type="text" id="kilometerstand" name="kilometerstand" placeholder="Bv. 150000">
 
-<label for="prijsMax">Prijs (max):</label>
-<input type="number" id="prijsMax" placeholder="Bv. 10000" />
+    <label for="prijs_min">Prijs (min):</label>
+    <input type="text" id="prijs_min" name="prijs_min" placeholder="Bv. 1000">
 
-<button type="button" onclick="filterAdvertenties()">Filter toepassen</button>
+    <label for="prijs_max">Prijs (max):</label>
+    <input type="text" id="prijs_max" name="prijs_max" placeholder="Bv. 10000">
 
-  </form>  <div id="advertentiesContainer"></div>  <script src="script.js"></script>
+    <button type="submit">Filter toepassen</button>
+  </form>
+</body>
+</html>
