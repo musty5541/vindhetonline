@@ -36,7 +36,7 @@
 
     photoInput.addEventListener("change", function () {
       previewContainer.innerHTML = "";
-      const files = Array.from(photoInput.files).slice(0, 15); // En fazla 15 dosya
+      const files = Array.from(photoInput.files).slice(0, 15); // En fazla 15
 
       files.forEach((file) => {
         const reader = new FileReader();
@@ -58,24 +58,34 @@
       const title = document.getElementById("title").value;
       const description = document.getElementById("description").value;
       const price = document.getElementById("price").value;
-      const files = Array.from(photoInput.files).slice(0, 15);
 
-      const imagePromises = files.map(file => {
-        return new Promise((resolve, reject) => {
+      const photoFiles = Array.from(document.getElementById("photos").files).slice(0, 15);
+      const photoData = [];
+
+      const readPhotos = photoFiles.map(file => {
+        return new Promise((resolve) => {
           const reader = new FileReader();
           reader.onload = function (e) {
-            resolve(e.target.result); // base64 string
+            resolve(e.target.result);
           };
-          reader.onerror = reject;
           reader.readAsDataURL(file);
         });
       });
 
-      Promise.all(imagePromises).then(images => {
-        const newAd = { title, description, price, images };
-        const ads = JSON.parse(localStorage.getItem("advertenties")) || [];
+      Promise.all(readPhotos).then((results) => {
+        photoData.push(...results);
+
+        const newAd = {
+          title,
+          description,
+          price,
+          photos: photoData
+        };
+
+        let ads = JSON.parse(localStorage.getItem("advertenties")) || [];
         ads.push(newAd);
         localStorage.setItem("advertenties", JSON.stringify(ads));
+
         alert("İlan başarıyla kaydedildi!");
         window.location.href = "listings.html";
       });
