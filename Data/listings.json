@@ -1,26 +1,80 @@
 [
   {
-    "title": "Opel Astra 2015",
+    "title": "Volkswagen Golf 7",
+    "price": 10500,
     "category": "Auto",
-    "brand": "Opel",
-    "model": "Astra",
-    "year": 2015,
-    "gearbox": "Manuel",
-    "km": 123000,
-    "fuel": "Benzin",
-    "price": 9500,
-    "image": "https://cdn.pixabay.com/photo/2013/07/12/16/20/car-150939_960_720.png"
+    "brand": "Volkswagen",
+    "model": "Golf 7",
+    "year": 2016,
+    "km": 98000,
+    "fuel": "Diesel",
+    "gearbox": "Automaat",
+    "image": "https://via.placeholder.com/250x150?text=Golf7"
   },
   {
-    "title": "iPhone 13 Pro",
+    "title": "Apple MacBook Pro 2021",
+    "price": 1500,
     "category": "Elektronica",
     "brand": "Apple",
-    "model": "iPhone 13 Pro",
-    "year": 2022,
-    "gearbox": "",
-    "km": 0,
-    "fuel": "",
-    "price": 850,
-    "image": "https://cdn.pixabay.com/photo/2021/09/22/19/19/iphone-13-6649744_960_720.jpg"
+    "model": "MacBook Pro",
+    "year": 2021,
+    "image": "https://via.placeholder.com/250x150?text=MacBook"
+  },
+  {
+    "title": "Vintage Gitaar",
+    "price": 350,
+    "category": "Muziekinstrumenten",
+    "brand": "Fender",
+    "model": "Stratocaster",
+    "year": 1999,
+    "image": "https://via.placeholder.com/250x150?text=Gitaar"
+  },
+  {
+    "title": "Moderne Sofa Set",
+    "price": 650,
+    "category": "Meubels",
+    "image": "https://via.placeholder.com/250x150?text=Sofa"
+  },
+  {
+    "title": "Tuinset 4 Stoelen",
+    "price": 120,
+    "category": "Tuin",
+    "image": "https://via.placeholder.com/250x150?text=Tuinset"
+  },
+  {
+    "title": "PlayStation 5",
+    "price": 499,
+    "category": "Elektronica",
+    "brand": "Sony",
+    "model": "PS5",
+    "image": "https://via.placeholder.com/250x150?text=PS5"
+  },
+  {
+    "title": "Kat Verblijfsset",
+    "price": 45,
+    "category": "Huisdieren",
+    "image": "https://via.placeholder.com/250x150?text=Kat"
+  },
+  {
+    "title": "Kinderfiets 16 inch",
+    "price": 60,
+    "category": "Speelgoed",
+    "brand": "Decathlon",
+    "model": "Btwin",
+    "image": "https://via.placeholder.com/250x150?text=Fiets"
+  },
+  {
+    "title": "Studio te huur in Gent",
+    "price": 650,
+    "category": "Vastgoed",
+    "image": "https://via.placeholder.com/250x150?text=Studio+Gent"
+  },
+  {
+    "title": "T-shirt Nike L",
+    "price": 20,
+    "category": "Kleding",
+    "brand": "Nike",
+    "model": "Sport L",
+    "image": "https://via.placeholder.com/250x150?text=Tshirt"
   }
 ]
