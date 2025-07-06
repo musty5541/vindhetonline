@@ -1,142 +1,39 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Advertenties - VindHetOnline.be</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .advertentie {
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-      padding: 10px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Recente Advertenties</h1>
+<h2>Recente Advertenties</h2>
 
-  <!-- 🔍 Filtreleme Formu -->
-  <form id="filterForm">
-    <label>Merk:
-      <input type="text" name="merk" />
-    </label>
-    <label>Brandstof:
-      <select name="brandstof">
-        <option value="">Alle</option>
-        <option value="Benzine">Benzine</option>
-        <option value="Diesel">Diesel</option>
-        <option value="Hybride">Hybride</option>
-      </select>
-    </label>
-    <label for="transmissie">Transmissie:</label>
-<select id="transmissie" name="transmissie">
-  <option value="">Alle</option>
-  <option value="manueel">Manueel</option>
-  <option value="automatisch">Automatisch</option>
-  <option value="semi-automatisch">Semi-Automatisch</option>
-<label for="jaarMin">Jaar (vanaf):</label>
-<input type="number" id="jaarMin" placeholder="Bv. 2015" />
-<input type="number" id="bouwjaarTot" name="bouwjaarTot" placeholder="Bv. 2020">
-    <label>Kilometers (max):
-    <label for="kmMax">Max. Kilometerstand:</label>
-<input type="number" id="kmMax" name="kmMax" placeholder="Bv. 150000">
-      <input type="number" name="km" />
-      <label for="prijsMin">Prijs (min):</label>
-<input type="number" id="prijsMin" placeholder="Bv. 1000">
-   <label for="prijsMax">Prijs (max):</label>
-<input type="number" id="prijsMax" placeholder="Bv. 10000"> 
-    <button type="submit">Filter toepassen</button>
-  </form>
+<form id="filterForm">
+  <label for="merk">Merk:</label>
+  <input type="text" id="merk" name="merk" />
 
-  <hr />
+  <label for="brandstof">Brandstof:</label>
+  <select id="brandstof" name="brandstof">
+    <option value="Alle">Alle</option>
+    <option value="Benzine">Benzine</option>
+    <option value="Diesel">Diesel</option>
+    <option value="Elektrisch">Elektrisch</option>
+    <option value="Hybride">Hybride</option>
+  </select>
 
-  <!-- 📄 İlanların listeleneceği yer -->
-  <div id="advertenties"></div>
+  <label for="transmissie">Transmissie:</label>
+  <select id="transmissie" name="transmissie">
+    <option value="Alle">Alle</option>
+    <option value="Manueel">Manueel</option>
+    <option value="Automaat">Automaat</option>
+  </select>
 
-  <!-- JSON verisiyle filtreleme yapan script -->
-  <script>
-    const advertenties = [
-      {
-        titel: "Volkswagen Golf",
-        merk: "Volkswagen",
-        brandstof: "Diesel",
-        transmissie: "Manueel",
-        jaar: 2018,
-        km: 98000,
-        beschrijving: "Zeer nette auto, altijd onderhouden.",
-      },
-      {
-        titel: "Renault Clio",
-        merk: "Renault",
-        brandstof: "Benzine",
-        transmissie: "Automaat",
-        jaar: 2020,
-        km: 35000,
-        beschrijving: "1e eigenaar, weinig gebruikt.",
-      },
-      {
-        titel: "BMW 3-serie",
-        merk: "BMW",
-        brandstof: "Diesel",
-        transmissie: "Automaat",
-        jaar: 2017,
-        km: 130000,
-        beschrijving: "Comfort en luxe in één.",
-      }
-    ];
+  <label for="jaarMin">Jaar (vanaf):</label>
+  <input type="number" id="jaarMin" placeholder="Bv. 2015" />
 
-    function toonAdvertenties(lijst) {
-      const container = document.getElementById("advertenties");
-      container.innerHTML = "";
-      if (lijst.length === 0) {
-        container.innerHTML = "<p>Geen advertenties gevonden.</p>";
-        return;
-      }
-      lijst.forEach((ad) => {
-        const div = document.createElement("div");
-        div.className = "advertentie";
-        div.innerHTML = `
-          <h3>${ad.titel}</h3>
-          <p><strong>Merk:</strong> ${ad.merk}</p>
-          <p><strong>Brandstof:</strong> ${ad.brandstof}</p>
-          <p><strong>Transmissie:</strong> ${ad.transmissie}</p>
-          <p><strong>Jaar:</strong> ${ad.jaar}</p>
-          <p><strong>KM:</strong> ${ad.km.toLocaleString()}</p>
-          <p>${ad.beschrijving}</p>
-        `;
-        container.appendChild(div);
-      });
-    }
+  <label for="jaarMax">Jaar (tot):</label>
+  <input type="number" id="jaarMax" placeholder="Bv. 2020" />
 
-    document.getElementById("filterForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      const merk = formData.get("merk").toLowerCase();
-      const brandstof = formData.get("brandstof");
-      const transmissie = formData.get("transmissie");
-      const jaar = parseInt(formData.get("jaar")) || 0;
-      const km = parseInt(formData.get("km")) || Infinity;
+  <label for="kmMax">Kilometers (max):</label>
+  <input type="number" id="kmMax" placeholder="100000" />
 
-      const gefilterd = advertenties.filter((ad) => {
-        return (
-          (merk === "" || ad.merk.toLowerCase().includes(merk)) &&
-          (brandstof === "" || ad.brandstof === brandstof) &&
-          (transmissie === "" || ad.transmissie === transmissie) &&
-          (jaar === 0 || ad.jaar >= jaar) &&
-          (ad.km <= km)
-        );
-      });
+  <label for="prijsMin">Prijs (min):</label>
+  <input type="number" id="prijsMin" placeholder="Bv. 1000" />
 
-      toonAdvertenties(gefilterd);
-    });
+  <label for="prijsMax">Prijs (max):</label>
+  <input type="number" id="prijsMax" placeholder="Bv. 10000" />
 
-    // Sayfa yüklenince tüm ilanları göster
-    toonAdvertenties(advertenties);
-  </script>
-</body>
-</html>
-
+  <button type="submit">Filter toepassen</button>
+</form>
