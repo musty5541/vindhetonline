@@ -1,22 +1,40 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recente Advertenties</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      background-color: #f9f9f9;
     }
-    .ad {
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-    }
-    #category-filter {
+
+    h1 {
+      font-size: 28px;
       margin-bottom: 20px;
+    }
+
+    #category-filter {
+      margin-bottom: 30px;
+    }
+
+    select {
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    .ad {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .ad h3 {
+      margin: 0 0 10px 0;
     }
   </style>
 </head>
@@ -24,7 +42,7 @@
 
   <h1>Recente Advertenties</h1>
 
-  <!-- Kategori Seçme Menüsü -->
+  <!-- Kategori Seçimi -->
   <div id="category-filter">
     <label for="category">Categorie:</label>
     <select id="category" onchange="filterListings()">
@@ -32,6 +50,13 @@
       <option value="auto">Auto</option>
       <option value="emlak">Emlak</option>
       <option value="giyim">Giyim</option>
+      <option value="elektronik">Elektronik</option>
+      <option value="mobilya">Mobilya</option>
+      <option value="oyuncak">Oyuncak</option>
+      <option value="bahce">Bahçe</option>
+      <option value="evcil">Evcil Hayvanlar</option>
+      <option value="muzik">Müzik Enstrümanları</option>
+      <option value="diger">Diğer</option>
     </select>
   </div>
 
@@ -66,15 +91,25 @@
         const kategori = ad.getAttribute("data-kategori");
         ad.style.display = (selected === "all" || kategori === selected) ? "block" : "none";
       });
+
+      // URL'yi güncelle
+      const url = new URL(window.location);
+      if (selected === "all") {
+        url.searchParams.delete("kategori");
+      } else {
+        url.searchParams.set("kategori", selected);
+      }
+      window.history.replaceState({}, "", url);
     }
 
-    // Sayfa yüklendiğinde URL'den kategori parametresi varsa uygula
+    // Sayfa yüklendiğinde URL'den kategori parametresi varsa filtre uygula
     window.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const kategoriParam = urlParams.get("kategori");
+      const params = new URLSearchParams(window.location.search);
+      const kategori = params.get("kategori");
 
-      if (kategoriParam) {
-        document.getElementById("category").value = kategoriParam;
+      if (kategori) {
+        const select = document.getElementById("category");
+        select.value = kategori;
         filterListings();
       }
     });
