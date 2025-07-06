@@ -3,47 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VindHetOnline - Advertenties</title>
+  <title>Recente Advertenties</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       padding: 20px;
     }
     .ad {
       border: 1px solid #ccc;
-      margin-bottom: 20px;
       padding: 15px;
+      margin-bottom: 15px;
       border-radius: 8px;
     }
     #category-filter {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
+
   <h1>Recente Advertenties</h1>
 
-  <!-- Kategori filtreleme -->
+  <!-- Kategori Seçme Menüsü -->
   <div id="category-filter">
     <label for="category">Categorie:</label>
     <select id="category" onchange="filterListings()">
-      <option value="all">Alles</option>
+      <option value="all">Hepsi</option>
       <option value="auto">Auto</option>
       <option value="emlak">Emlak</option>
-      <option value="elektronik">Elektronik</option>
       <option value="giyim">Giyim</option>
-      <option value="mobilya">Mobilya</option>
-      <option value="oyuncak">Oyuncak</option>
-      <option value="bahce">Bahçe</option>
-      <option value="evcil">Evcil Hayvanlar</option>
-      <option value="muzik">Müzik Enstrümanları</option>
-      <option value="diger">Diğer</option>
     </select>
   </div>
 
   <!-- İlanlar -->
   <div class="ad" data-kategori="auto">
-    <h3>Opel Astra 2015</h3>
+    <h3>BMW 320d</h3>
     <p>Kategori: Auto</p>
   </div>
 
@@ -58,11 +52,11 @@
   </div>
 
   <div class="ad" data-kategori="auto">
-    <h3>BMW 320d</h3>
+    <h3>Opel Astra 2015</h3>
     <p>Kategori: Auto</p>
   </div>
 
-  <!-- Filtreleme Scripti -->
+  <!-- JavaScript -->
   <script>
     function filterListings() {
       const selected = document.getElementById("category").value;
@@ -74,13 +68,17 @@
       });
     }
 
-    // Sayfa ilk açıldığında URL'deki kategoriye göre filtrele
-    const urlParams = new URLSearchParams(window.location.search);
-    const kategoriParam = urlParams.get('kategorie');
-    if (kategoriParam) {
-      document.getElementById("category").value = kategoriParam;
-      filterListings();
-    }
+    // Sayfa yüklendiğinde URL'den kategori parametresi varsa uygula
+    window.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const kategoriParam = urlParams.get("kategori");
+
+      if (kategoriParam) {
+        document.getElementById("category").value = kategoriParam;
+        filterListings();
+      }
+    });
   </script>
+
 </body>
 </html>
