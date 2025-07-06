@@ -1,63 +1,27 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Plaats een advertentie</title>
-</head>
-<body>
-  <h1>Plaats een advertentie</h1>
+<form id="adForm" ... >
+  <!-- Başlık alanı -->
+  <label for="title">Titel:</label>
+  <input type="text" id="title" name="title" required>
 
-  <form name="advertentie" method="POST" data-netlify="true" enctype="multipart/form-data">
-    <p>
-      <label>Naam: <input type="text" name="naam" required></label>
-    </p>
-    <p>
-      <label>Merk: <input type="text" name="merk" required></label>
-    </p>
-    <p>
-      <label>Model: <input type="text" name="model" required></label>
-    </p>
-    <p>
-      <label>Bouwjaar: <input type="number" name="bouwjaar" required></label>
-    </p>
-    <p>
-      <label>Prijs (€): <input type="number" name="prijs" required></label>
-    </p>
-    <p>
-      <label>Kilometerstand: <input type="number" name="kmstand"></label>
-    </p>
-    <p>
-      <label>Transmissie:
-        <select name="transmissie">
-          <option value="Manueel">Manueel</option>
-          <option value="Automatisch">Automatisch</option>
-        </select>
-      </label>
-    </p>
-    <p>
-      <label>Brandstof:
-        <select name="brandstof">
-          <option value="Benzine">Benzine</option>
-          <option value="Diesel">Diesel</option>
-          <option value="Elektrisch">Elektrisch</option>
-        </select>
-      </label>
-    </p>
-    <p>
-      <label>Beschrijving:<br>
-        <textarea name="beschrijving" rows="5" cols="40"></textarea>
-      </label>
-    </p>
-    <p>
-      <label>Foto's uploaden (max 15): 
-        <input type="file" name="fotos" accept="image/*" multiple>
-      </label>
-    </p>
-    <p>
-      <button type="submit">Verzenden</button>
-    </p>
-  </form>
+  <!-- Açıklama alanı -->
+  <label for="description">Beschrijving:</label>
+  <textarea id="description" name="description" required></textarea>
 
-</body>
-</html>
+  <!-- 📍 BURAYA KATEGORİ EKLİYORUZ -->
+  <label for="categorie">Categorie:</label>
+  <select id="categorie" name="categorie" required>
+    <option value="">Selecteer een categorie</option>
+    <option value="auto">Auto</option>
+    <option value="vastgoed">Vastgoed</option>
+    <option value="elektronica">Elektronica</option>
+    <option value="kleding">Kleding</option>
+    <option value="meubels">Meubels</option>
+    <option value="speelgoed">Speelgoed</option>
+    <option value="tuin">Tuin</option>
+    <option value="huisdieren">Huisdieren</option>
+    <option value="muziekinstrumenten">Muziekinstrumenten</option>
+    <option value="overige">Overige</option>
+  </select>
+
+  <!-- Diğer alanlar: fiyat, resim, gönderme butonu vs. -->
+</form>
