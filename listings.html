@@ -1,3 +1,46 @@
+<style>
+  form#filterForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+
+  form#filterForm input,
+  form#filterForm select,
+  form#filterForm button {
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  form#filterForm button {
+    background-color: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  form#filterForm button:hover {
+    background-color: #444;
+  }
+
+  @media (min-width: 600px) {
+    form#filterForm {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    form#filterForm label,
+    form#filterForm input,
+    form#filterForm select {
+      flex: 1 1 45%;
+    }
+  }
+</style>
 <h2>Recente Advertenties</h2>
 
 <form id="filterForm">
