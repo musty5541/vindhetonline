@@ -2,181 +2,91 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VindHetOnline - Zoekertjes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VindHetOnline - Zoeken</title>
   <style>
-    body <h1>İlanlar</h1>
-<div id="listings-container"></div>{
+    body {
       font-family: Arial, sans-serif;
       background: #f9f9f9;
       margin: 0;
       padding: 0;
     }
-    .filters, .listings {
-      max-width: 1000px;
-      margin: auto;
+
+    h1 {
+      text-align: center;
       padding: 20px;
     }
-    .filters select, .filters input {
-      padding: 8px;
-      margin: 5px;
-      width: 150px;
-    }
-    .listing {
-      background: white;
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
+
+    #listings-container {
       display: flex;
-      gap: 15px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
     }
-    .listing img {
-      width: 150px;
-      height: 100px;
-      object-fit: cover;
+
+    .listing-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .listing-card img {
+      max-width: 100%;
+      height: auto;
       border-radius: 5px;
+      margin-bottom: 10px;
     }
-    .listing-info {
-      flex-grow: 1;
+
+    .listing-card h2 {
+      margin: 0 0 10px;
+    }
+
+    .listing-card p {
+      margin: 5px 0;
+    }
+
+    .listing-card strong {
+      display: inline-block;
+      width: 100px;
     }
   </style>
 </head>
 <body>
-
-  <div class="filters">
-    <select id="categoryFilter">
-      <option value="">Categorie</option>
-      <option value="Auto">Auto</option>
-      <option value="Vastgoed">Vastgoed</option>
-      <option value="Elektronica">Elektronica</option>
-      <option value="Kleding">Kleding</option>
-      <option value="Meubels">Meubels</option>
-      <option value="Tuin">Tuin</option>
-      <option value="Huisdieren">Huisdieren</option>
-      <option value="Muziekinstrumenten">Muziekinstrumenten</option>
-      <option value="Overig">Overig</option>
-    </select>
-
-    <input type="text" id="brandFilter" placeholder="Merk">
-    <input type="text" id="modelFilter" placeholder="Model">
-    <input type="number" id="yearFilter" placeholder="Bouwjaar vanaf">
-    <input type="number" id="kmFilter" placeholder="KM max">
-    <select id="fuelFilter">
-      <option value="">Brandstof</option>
-      <option value="Benzine">Benzine</option>
-      <option value="Diesel">Diesel</option>
-      <option value="Elektrisch">Elektrisch</option>
-      <option value="Hybride">Hybride</option>
-    </select>
-    <select id="transmissionFilter">
-      <option value="">Transmissie</option>
-      <option value="Manueel">Manueel</option>
-      <option value="Automatisch">Automatisch</option>
-    </select>
-    <input type="number" id="priceFilter" placeholder="Prijs max">
-    <button onclick="applyFilters()">Filter</button>
-  </div>
-
-  <div class="listings" id="listingContainer">
-    <!-- İlanlar buraya gelecek -->
-  </div>
+  <h1>İlanlar</h1>
+  <div id="listings-container"></div>
 
   <script>
-    let allListings = [];
+    fetch('Data/listings.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('listings-container');
+        container.innerHTML = '';
 
-    async function loadListings() {
-      const response = await fetch('data/listings.json');
-      allListings = await response.json();
-      displayListings(allListings);
-    }
-
-    function displayListings(listings) {
-      const container = document.getElementById("listingContainer");
-      container.innerHTML = "";
-
-      if (listings.length === 0) {
-        container.innerHTML = "<p>Geen resultaten gevonden.</p>";
-        return;
-      }
-
-      listings.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "listing";
-        div.innerHTML = `
-          <img src="${item.images?.[0] || 'img/placeholder.jpg'}" alt="Foto">
-          <div class="listing-info">
-            <h3>${item.title}</h3>
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'listing-card';
+          card.innerHTML = `
+            <img src="${item.image}" alt="Foto" />
+            <h2>${item.title}</h2>
             <p><strong>Prijs:</strong> €${item.price}</p>
             <p><strong>Categorie:</strong> ${item.category}</p>
-            ${item.brand ? `<p><strong>Merk:</strong> ${item.brand}</p>` : ''}
-            ${item.model ? `<p><strong>Model:</strong> ${item.model}</p>` : ''}
-            ${item.year ? `<p><strong>Bouwjaar:</strong> ${item.year}</p>` : ''}
-            ${item.km ? `<p><strong>KM:</strong> ${item.km}</p>` : ''}
-            ${item.fuel ? `<p><strong>Brandstof:</strong> ${item.fuel}</p>` : ''}
-            ${item.transmission ? `<p><strong>Transmissie:</strong> ${item.transmission}</p>` : ''}
-          </div>
-        `;
-        container.appendChild(div);
+            <p><strong>Merk:</strong> ${item.brand}</p>
+            <p><strong>Model:</strong> ${item.model}</p>
+            <p><strong>Bouwjaar:</strong> ${item.year}</p>
+            <p><strong>KM:</strong> ${item.km}</p>
+            <p><strong>Brandstof:</strong> ${item.fuel}</p>
+            <p><strong>Transmissie:</strong> ${item.gearbox}</p>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Veri yüklenirken hata oluştu:', error);
       });
-    }
-
-    function applyFilters() {
-      const category = document.getElementById("categoryFilter").value.toLowerCase();
-      const brand = document.getElementById("brandFilter").value.toLowerCase();
-      const model = document.getElementById("modelFilter").value.toLowerCase();
-      const year = parseInt(document.getElementById("yearFilter").value);
-      const km = parseInt(document.getElementById("kmFilter").value);
-      const fuel = document.getElementById("fuelFilter").value.toLowerCase();
-      const transmission = document.getElementById("transmissionFilter").value.toLowerCase();
-      const price = parseInt(document.getElementById("priceFilter").value);
-
-      const filtered = allListings.filter(item => {
-        return (!category || item.category?.toLowerCase() === category) &&
-               (!brand || item.brand?.toLowerCase().includes(brand)) &&
-               (!model || item.model?.toLowerCase().includes(model)) &&
-               (!year || item.year >= year) &&
-               (!km || item.km <= km) &&
-               (!fuel || item.fuel?.toLowerCase() === fuel) &&
-               (!transmission || item.transmission?.toLowerCase() === transmission) &&
-               (!price || item.price <= price);
-      });
-
-      displayListings(filtered);
-    }
-
-    window.onload = loadListings;
   </script>
-<script>
-  fetch('Data/listings.json')
-    .then(response => response.json())
-    .then(data => {
-      const container = document.getElementById('listings-container');
-
-      data.forEach(item => {
-        const card = document.createElement('div');
-        card.style.border = '1px solid #ccc';
-        card.style.padding = '10px';
-        card.style.margin = '10px';
-        card.style.borderRadius = '8px';
-
-        card.innerHTML = `
-          <h2>${item.title}</h2>
-          <p><strong>Marka:</strong> ${item.brand}</p>
-          <p><strong>Model:</strong> ${item.model}</p>
-          <p><strong>Yıl:</strong> ${item.year}</p>
-          <p><strong>Vites:</strong> ${item.gearbox}</p>
-          <p><strong>KM:</strong> ${item.km.toLocaleString()}</p>
-          <p><strong>Yakıt:</strong> ${item.fuel}</p>
-          <p><strong>Fiyat:</strong> €${item.price.toLocaleString()}</p>
-          <img src="${item.image}" alt="İlan resmi" style="max-width:200px; border-radius: 4px;">
-        `;
-        container.appendChild(card);
-      });
-    })
-    .catch(error => {
-      console.error('Veri yüklenemedi:', error);
-    });
-</script>
 </body>
 </html>
