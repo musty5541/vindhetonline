@@ -147,6 +147,36 @@
 
     window.onload = loadListings;
   </script>
+<script>
+  fetch('Data/listings.json')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('listings-container');
 
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.style.border = '1px solid #ccc';
+        card.style.padding = '10px';
+        card.style.margin = '10px';
+        card.style.borderRadius = '8px';
+
+        card.innerHTML = `
+          <h2>${item.title}</h2>
+          <p><strong>Marka:</strong> ${item.brand}</p>
+          <p><strong>Model:</strong> ${item.model}</p>
+          <p><strong>Yıl:</strong> ${item.year}</p>
+          <p><strong>Vites:</strong> ${item.gearbox}</p>
+          <p><strong>KM:</strong> ${item.km.toLocaleString()}</p>
+          <p><strong>Yakıt:</strong> ${item.fuel}</p>
+          <p><strong>Fiyat:</strong> €${item.price.toLocaleString()}</p>
+          <img src="${item.image}" alt="İlan resmi" style="max-width:200px; border-radius: 4px;">
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(error => {
+      console.error('Veri yüklenemedi:', error);
+    });
+</script>
 </body>
 </html>
