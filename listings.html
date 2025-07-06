@@ -1,118 +1,150 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recente Advertenties</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VindHetOnline - Zoekertjes</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .filters, .listings {
+      max-width: 1000px;
+      margin: auto;
       padding: 20px;
-      background-color: #f9f9f9;
     }
-
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
+    .filters select, .filters input {
+      padding: 8px;
+      margin: 5px;
+      width: 150px;
     }
-
-    #category-filter {
-      margin-bottom: 30px;
-    }
-
-    select {
-      padding: 5px;
-      font-size: 16px;
-    }
-
-    .ad {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+    .listing {
+      background: white;
+      margin: 10px 0;
       padding: 15px;
-      margin-bottom: 20px;
+      border-radius: 8px;
+      display: flex;
+      gap: 15px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
-
-    .ad h3 {
-      margin: 0 0 10px 0;
+    .listing img {
+      width: 150px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .listing-info {
+      flex-grow: 1;
     }
   </style>
 </head>
 <body>
 
-  <h1>Recente Advertenties</h1>
-
-  <!-- Kategori Seçimi -->
-  <div id="category-filter">
-    <label for="category">Categorie:</label>
-    <select id="category" onchange="filterListings()">
-      <option value="all">Hepsi</option>
-      <option value="auto">Auto</option>
-      <option value="emlak">Emlak</option>
-      <option value="giyim">Giyim</option>
-      <option value="elektronik">Elektronik</option>
-      <option value="mobilya">Mobilya</option>
-      <option value="oyuncak">Oyuncak</option>
-      <option value="bahce">Bahçe</option>
-      <option value="evcil">Evcil Hayvanlar</option>
-      <option value="muzik">Müzik Enstrümanları</option>
-      <option value="diger">Diğer</option>
+  <div class="filters">
+    <select id="categoryFilter">
+      <option value="">Categorie</option>
+      <option value="Auto">Auto</option>
+      <option value="Vastgoed">Vastgoed</option>
+      <option value="Elektronica">Elektronica</option>
+      <option value="Kleding">Kleding</option>
+      <option value="Meubels">Meubels</option>
+      <option value="Tuin">Tuin</option>
+      <option value="Huisdieren">Huisdieren</option>
+      <option value="Muziekinstrumenten">Muziekinstrumenten</option>
+      <option value="Overig">Overig</option>
     </select>
+
+    <input type="text" id="brandFilter" placeholder="Merk">
+    <input type="text" id="modelFilter" placeholder="Model">
+    <input type="number" id="yearFilter" placeholder="Bouwjaar vanaf">
+    <input type="number" id="kmFilter" placeholder="KM max">
+    <select id="fuelFilter">
+      <option value="">Brandstof</option>
+      <option value="Benzine">Benzine</option>
+      <option value="Diesel">Diesel</option>
+      <option value="Elektrisch">Elektrisch</option>
+      <option value="Hybride">Hybride</option>
+    </select>
+    <select id="transmissionFilter">
+      <option value="">Transmissie</option>
+      <option value="Manueel">Manueel</option>
+      <option value="Automatisch">Automatisch</option>
+    </select>
+    <input type="number" id="priceFilter" placeholder="Prijs max">
+    <button onclick="applyFilters()">Filter</button>
   </div>
 
-  <!-- İlanlar -->
-  <div class="ad" data-kategori="auto">
-    <h3>BMW 320d</h3>
-    <p>Kategori: Auto</p>
+  <div class="listings" id="listingContainer">
+    <!-- İlanlar buraya gelecek -->
   </div>
 
-  <div class="ad" data-kategori="emlak">
-    <h3>3+1 Daire Gent</h3>
-    <p>Kategori: Emlak</p>
-  </div>
-
-  <div class="ad" data-kategori="giyim">
-    <h3>Marka Elbise</h3>
-    <p>Kategori: Giyim</p>
-  </div>
-
-  <div class="ad" data-kategori="auto">
-    <h3>Opel Astra 2015</h3>
-    <p>Kategori: Auto</p>
-  </div>
-
-  <!-- JavaScript -->
   <script>
-    function filterListings() {
-      const selected = document.getElementById("category").value;
-      const ads = document.querySelectorAll(".ad");
+    let allListings = [];
 
-      ads.forEach(ad => {
-        const kategori = ad.getAttribute("data-kategori");
-        ad.style.display = (selected === "all" || kategori === selected) ? "block" : "none";
-      });
-
-      // URL'yi güncelle
-      const url = new URL(window.location);
-      if (selected === "all") {
-        url.searchParams.delete("kategori");
-      } else {
-        url.searchParams.set("kategori", selected);
-      }
-      window.history.replaceState({}, "", url);
+    async function loadListings() {
+      const response = await fetch('data/listings.json');
+      allListings = await response.json();
+      displayListings(allListings);
     }
 
-    // Sayfa yüklendiğinde URL'den kategori parametresi varsa filtre uygula
-    window.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const kategori = params.get("kategori");
+    function displayListings(listings) {
+      const container = document.getElementById("listingContainer");
+      container.innerHTML = "";
 
-      if (kategori) {
-        const select = document.getElementById("category");
-        select.value = kategori;
-        filterListings();
+      if (listings.length === 0) {
+        container.innerHTML = "<p>Geen resultaten gevonden.</p>";
+        return;
       }
-    });
+
+      listings.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "listing";
+        div.innerHTML = `
+          <img src="${item.images?.[0] || 'img/placeholder.jpg'}" alt="Foto">
+          <div class="listing-info">
+            <h3>${item.title}</h3>
+            <p><strong>Prijs:</strong> €${item.price}</p>
+            <p><strong>Categorie:</strong> ${item.category}</p>
+            ${item.brand ? `<p><strong>Merk:</strong> ${item.brand}</p>` : ''}
+            ${item.model ? `<p><strong>Model:</strong> ${item.model}</p>` : ''}
+            ${item.year ? `<p><strong>Bouwjaar:</strong> ${item.year}</p>` : ''}
+            ${item.km ? `<p><strong>KM:</strong> ${item.km}</p>` : ''}
+            ${item.fuel ? `<p><strong>Brandstof:</strong> ${item.fuel}</p>` : ''}
+            ${item.transmission ? `<p><strong>Transmissie:</strong> ${item.transmission}</p>` : ''}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function applyFilters() {
+      const category = document.getElementById("categoryFilter").value.toLowerCase();
+      const brand = document.getElementById("brandFilter").value.toLowerCase();
+      const model = document.getElementById("modelFilter").value.toLowerCase();
+      const year = parseInt(document.getElementById("yearFilter").value);
+      const km = parseInt(document.getElementById("kmFilter").value);
+      const fuel = document.getElementById("fuelFilter").value.toLowerCase();
+      const transmission = document.getElementById("transmissionFilter").value.toLowerCase();
+      const price = parseInt(document.getElementById("priceFilter").value);
+
+      const filtered = allListings.filter(item => {
+        return (!category || item.category?.toLowerCase() === category) &&
+               (!brand || item.brand?.toLowerCase().includes(brand)) &&
+               (!model || item.model?.toLowerCase().includes(model)) &&
+               (!year || item.year >= year) &&
+               (!km || item.km <= km) &&
+               (!fuel || item.fuel?.toLowerCase() === fuel) &&
+               (!transmission || item.transmission?.toLowerCase() === transmission) &&
+               (!price || item.price <= price);
+      });
+
+      displayListings(filtered);
+    }
+
+    window.onload = loadListings;
   </script>
 
 </body>
