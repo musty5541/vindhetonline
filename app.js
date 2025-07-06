@@ -1,20 +1,25 @@
-function advertentiesTonen(advertenties) {
-  const container = document.getElementById("advertentiesContainer");
-  container.innerHTML = "";
+function filterAdvertenties() {
+  const merk = document.getElementById("merk").value.toLowerCase();
+  const brandstof = document.getElementById("brandstof").value;
+  const transmissie = document.getElementById("transmissie").value;
+  const jaarMin = parseInt(document.getElementById("jaarMin").value) || 0;
+  const kmMax = parseInt(document.getElementsByName("km")[0].value) || Infinity;
+  const prijsMax = parseInt(document.getElementById("prijsMax").value) || Infinity;
 
-  advertenties.forEach((ad) => {
-    const card = document.createElement("div");
-    card.classList.add("advertentie-card");
-    card.innerHTML = `
-      <h3>${ad.naam}</h3>
-      <p><strong>Merk:</strong> ${ad.merk}</p>
-      <p><strong>Brandstof:</strong> ${ad.brandstof}</p>
-      <p><strong>Transmissie:</strong> ${ad.transmissie}</p>
-      <p><strong>Bouwjaar:</strong> ${ad.jaar}</p>
-      <p><strong>Kilometerstand:</strong> ${ad.kilometers.toLocaleString()} km</p>
-      <p><strong>Prijs:</strong> €${ad.prijs.toLocaleString()}</p>
-      <p>${ad.beschrijving}</p>
-    `;
-    container.appendChild(card);
-  });
+  fetch("https://vindhetonline.netlify.app/.netlify/functions/getData")
+    .then((res) => res.json())
+    .then((data) => {
+      const gefilterdeAdvertenties = data.filter((listing) => {
+        return (
+          (merk === "" || listing.merk.toLowerCase().includes(merk)) &&
+          (brandstof === "Alle" || listing.brandstof === brandstof) &&
+          (transmissie === "Alle" || listing.transmissie === transmissie) &&
+          listing.jaar >= jaarMin &&
+          listing.km <= kmMax &&
+          listing.prijs <= prijsMax
+        );
+      });
+
+      advertentiesTonen(gefilterdeAdvertenties);
+    });
 }
