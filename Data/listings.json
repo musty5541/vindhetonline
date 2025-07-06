@@ -9,18 +9,18 @@
     "km": 123000,
     "fuel": "Benzin",
     "price": 9500,
-    "image": "https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_1280.jpg"
+    "image": "https://cdn.pixabay.com/photo/2013/07/12/16/20/car-150939_960_720.png"
   },
   {
     "title": "iPhone 13 Pro",
     "category": "Elektronica",
     "brand": "Apple",
-    "model": "13 Pro",
+    "model": "iPhone 13 Pro",
     "year": 2022,
     "gearbox": "",
     "km": 0,
     "fuel": "",
     "price": 850,
-    "image": "https://cdn.pixabay.com/photo/2021/09/28/14/42/iphone-6659181_1280.jpg"
+    "image": "https://cdn.pixabay.com/photo/2021/09/22/19/19/iphone-13-6649744_960_720.jpg"
   }
 ]
