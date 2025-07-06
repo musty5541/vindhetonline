@@ -2,94 +2,139 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VindHetOnline - Zoeken</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VindHetOnline - Advertenties</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
-
-    h1 {
-      text-align: center;
       padding: 20px;
     }
-
-    #listings-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .listing-card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 600px;
-      padding: 20px;
-    }
-
-    .listing-card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 5px;
+    .listing {
+      border: 1px solid #ddd;
+      padding: 15px;
       margin-bottom: 10px;
+      border-radius: 10px;
     }
-
-    .listing-card h2 {
-      margin: 0 0 10px;
+    .listing img {
+      max-width: 200px;
+      height: auto;
+      border-radius: 8px;
     }
-
-    .listing-card p {
-      margin: 5px 0;
+    .filter-buttons {
+      margin-bottom: 20px;
     }
-
-    .listing-card strong {
-      display: inline-block;
-      width: 100px;
+    .filter-buttons button {
+      margin-right: 10px;
+      padding: 10px 15px;
+      cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+    }
+    .filter-buttons button.active {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>İlanlar</h1>
-  <div id="listings-container"></div>
-<script>
-  fetch('data/listings.json')
-    .then(response => response.json())
-    .then(data => {
-      const container = document.getElementById('listing-container');
-      container.innerHTML = '';
+  <h1>Advertenties</h1>
 
-      data.forEach(item => {
-        const imageUrl = item.image && item.image !== "" ? item.image : 'https://via.placeholder.com/300x200?text=Geen+foto';
+  <div class="filter-buttons">
+    <button data-category="Alles" class="active">Alles</button>
+    <button data-category="Auto">Auto</button>
+    <button data-category="Vastgoed">Vastgoed</button>
+    <button data-category="Elektronica">Elektronica</button>
+    <button data-category="Kleding">Kleding</button>
+    <button data-category="Meubels">Meubels</button>
+    <button data-category="Speelgoed">Speelgoed</button>
+    <button data-category="Tuin">Tuin</button>
+    <button data-category="Huisdieren">Huisdieren</button>
+    <button data-category="Muziekinstrumenten">Muziekinstrumenten</button>
+    <button data-category="Overig">Overig</button>
+  </div>
 
-        const card = document.createElement('div');
-        card.className = 'listing';
+  <div id="listing-container"></div>
 
-        card.innerHTML = `
-          <h3>${item.title}</h3>
-          <img src="${imageUrl}" alt="Foto" width="300" height="200">
-          <p>Prijs: €${item.price}</p>
-          <p>Merk: ${item.brand || "-"}</p>
-          <p>Model: ${item.model || "-"}</p>
-          <p>Bouwjaar: ${item.year || "-"}</p>
-          <p>Transmissie: ${item.transmission || "-"}</p>
-          <p>KM-stand: ${item.km || "-"}</p>
-          <p>Brandstof: ${item.fuel || "-"}</p>
-          <p>Categorie: ${item.category || "-"}</p>
+  <script>
+    const listings = [
+      {
+        title: "Volkswagen Golf 2015",
+        description: "Goed onderhouden auto met lage kilometers.",
+        category: "Auto",
+        image: "https://via.placeholder.com/200x120?text=Auto"
+      },
+      {
+        title: "2-kamer appartement te huur",
+        description: "Centrum van Antwerpen, volledig gemeubileerd.",
+        category: "Vastgoed",
+        image: "https://via.placeholder.com/200x120?text=Appartement"
+      },
+      {
+        title: "iPhone 13 Pro",
+        description: "Zo goed als nieuw, inclusief doos en accessoires.",
+        category: "Elektronica",
+        image: "https://via.placeholder.com/200x120?text=Telefoon"
+      },
+      {
+        title: "Gitaar Yamaha F310",
+        description: "Perfect voor beginners, in uitstekende staat.",
+        category: "Muziekinstrumenten",
+        image: "https://via.placeholder.com/200x120?text=Gitaar"
+      },
+      {
+        title: "Houten eettafel",
+        description: "Massief hout, 6 personen, nauwelijks gebruikt.",
+        category: "Meubels",
+        image: "https://via.placeholder.com/200x120?text=Tafel"
+      },
+      {
+        title: "Winterjas heren",
+        description: "Waterdicht, maat L, donkerblauw.",
+        category: "Kleding",
+        image: "https://via.placeholder.com/200x120?text=Jas"
+      },
+      {
+        title: "Labrador pup",
+        description: "8 weken oud, gevaccineerd en ontwormd.",
+        category: "Huisdieren",
+        image: "https://via.placeholder.com/200x120?text=Puppy"
+      }
+    ];
+
+    const container = document.getElementById('listing-container');
+    const buttons = document.querySelectorAll('.filter-buttons button');
+
+    function renderListings(category = "Alles") {
+      container.innerHTML = "";
+      const filtered = category === "Alles" ? listings : listings.filter(l => l.category === category);
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>Geen advertenties gevonden.</p>";
+        return;
+      }
+
+      filtered.forEach(listing => {
+        const div = document.createElement('div');
+        div.className = "listing";
+        div.innerHTML = `
+          <img src="${listing.image}" alt="${listing.title}" />
+          <h3>${listing.title}</h3>
+          <p>${listing.description}</p>
+          <strong>Categorie:</strong> ${listing.category}
         `;
-
-        container.appendChild(card);
+        container.appendChild(div);
       });
-    })
-    .catch(error => {
-      console.error('Fout bij het laden van de data:', error);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderListings(btn.getAttribute('data-category'));
+      });
     });
-</script>
+
+    renderListings(); // default
+  </script>
 </body>
 </html>
