@@ -23,3 +23,4 @@ function filterAdvertenties() {
       advertentiesTonen(gefilterdeAdvertenties);
     });
 }
+const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value);
