@@ -1,27 +1,40 @@
-<form id="adForm" ... >
-  <!-- Başlık alanı -->
-  <label for="title">Titel:</label>
-  <input type="text" id="title" name="title" required>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plaats een advertentie</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-  <!-- Açıklama alanı -->
-  <label for="description">Beschrijving:</label>
-  <textarea id="description" name="description" required></textarea>
+  <form id="adForm">
+    <!-- Başlık alanı -->
+    <label for="title">Titel:</label>
+    <input type="text" id="title" name="title">
 
-  <!-- 📍 BURAYA KATEGORİ EKLİYORUZ -->
-  <label for="categorie">Categorie:</label>
-  <select id="categorie" name="categorie" required>
-    <option value="">Selecteer een categorie</option>
-    <option value="auto">Auto</option>
-    <option value="vastgoed">Vastgoed</option>
-    <option value="elektronica">Elektronica</option>
-    <option value="kleding">Kleding</option>
-    <option value="meubels">Meubels</option>
-    <option value="speelgoed">Speelgoed</option>
-    <option value="tuin">Tuin</option>
-    <option value="huisdieren">Huisdieren</option>
-    <option value="muziekinstrumenten">Muziekinstrumenten</option>
-    <option value="overige">Overige</option>
-  </select>
+    <!-- Açıklama alanı -->
+    <label for="description">Beschrijving:</label>
+    <textarea id="description" name="description"></textarea>
 
-  <!-- Diğer alanlar: fiyat, resim, gönderme butonu vs. -->
-</form>
+    <!-- 📍 BURAYA KATEGORİ EKLİYORUZ -->
+    <label for="categorie">Categorie:</label>
+    <select id="categorie" name="categorie">
+      <option value="">Selecteer een categorie</option>
+      <option value="auto">Auto</option>
+      <option value="vastgoed">Vastgoed</option>
+      <option value="elektronica">Elektronica</option>
+      <option value="kleding">Kleding</option>
+      <option value="meubels">Meubels</option>
+      <option value="speelgoed">Speelgoed</option>
+      <option value="tuin">Tuin</option>
+      <option value="huisdieren">Huisdieren</option>
+      <option value="muziekinstrumenten">Muziekinstrumenten</option>
+      <option value="overig">Overig</option>
+    </select>
+
+    <button type="submit">Advertentie plaatsen</button>
+  </form>
+
+</body>
+</html>
