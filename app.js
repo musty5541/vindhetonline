@@ -1,48 +1,55 @@
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("listings.json")
-        .then(response => response.json())
-        .then(data => {
-            const filterForm = document.getElementById("filterForm");
-            const listingsContainer = document.getElementById("listings");
+let listings = [];
 
-            // Tüm ilanları yükle
-            displayListings(data);
+fetch("listings.json")
+  .then((res) => res.json())
+  .then((data) => {
+    listings = data;
+    renderListings(listings);
+  });
 
-            // Filtreleme olayı
-            filterForm.addEventListener("submit", function (e) {
-                e.preventDefault();
+function renderListings(filteredListings) {
+  const container = document.getElementById("listings-container");
+  container.innerHTML = "";
 
-                const selectedCategory = document.getElementById("category").value;
+  if (filteredListings.length === 0) {
+    container.innerHTML = "<p>Geen advertenties gevonden.</p>";
+    return;
+  }
 
-                const filteredData = data.filter(item => {
-                    return selectedCategory === "" || item.category === selectedCategory;
-                });
+  filteredListings.forEach((listing) => {
+    const listingElement = document.createElement("div");
+    listingElement.className = "listing";
 
-                displayListings(filteredData);
-            });
+    listingElement.innerHTML = `
+      <img src="${listing.image}" alt="Foto" />
+      <h2>${listing.title}</h2>
+      <p><strong>Prijs:</strong> €${listing.price}</p>
+      <p><strong>Categorie:</strong> ${listing.category}</p>
+      <p><strong>Merk:</strong> ${listing.brand || "-"}</p>
+      <p><strong>Model:</strong> ${listing.model || "-"}</p>
+      <p><strong>Bouwjaar:</strong> ${listing.year || "-"}</p>
+      <p><strong>KM:</strong> ${listing.km || "-"}</p>
+      <p><strong>Brandstof:</strong> ${listing.fuel || "-"}</p>
+      <p><strong>Transmissie:</strong> ${listing.gearbox || "-"}</p>
+    `;
 
-            // İlanları ekrana basan fonksiyon
-            function displayListings(listings) {
-                listingsContainer.innerHTML = "";
+    container.appendChild(listingElement);
+  });
+}
 
-                listings.forEach(item => {
-                    const card = document.createElement("div");
-                    card.classList.add("listing-card");
+// Örnek kategori filtresi (eğer kategorilere tıklanıyorsa)
+document.querySelectorAll(".category-link").forEach((el) => {
+  el.addEventListener("click", (e) => {
+    e.preventDefault();
+    const selectedCategory = e.target.dataset.category;
 
-                    card.innerHTML = `
-                        <img src="${item.image}" alt="Foto" width="100">
-                        <h2>${item.title}</h2>
-                        <p><strong>Prijs:</strong> €${item.price}</p>
-                        <p><strong>Categorie:</strong> ${item.category}</p>
-                        <p><strong>Merk:</strong> ${item.brand}</p>
-                        <p><strong>Model:</strong> ${item.model}</p>
-                        <p><strong>Bouwjaar:</strong> ${item.year}</p>
-                        <p><strong>KM:</strong> ${item.km}</p>
-                        <p><strong>Brandstof:</strong> ${item.fuel}</p>
-                    `;
-
-                    listingsContainer.appendChild(card);
-                });
-            }
-        });
+    if (selectedCategory === "all") {
+      renderListings(listings);
+    } else {
+      const filtered = listings.filter(
+        (item) => item.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
+      renderListings(filtered);
+    }
+  });
 });
