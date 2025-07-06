@@ -1,155 +1,123 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Advertenties</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    select, input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      min-width: 150px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>Zoek advertenties</h1>
+  <h1>Zoek een Auto</h1>
 
   <form id="filterForm">
-    <label>Merk:</label>
-    <select name="merk">
-      <option value="">Alle</option>
-      <option value="Audi">Audi</option>
-      <option value="BMW">BMW</option>
-      <option value="Mercedes">Mercedes</option>
-      <option value="Volkswagen">Volkswagen</option>
-      <option value="Opel">Opel</option>
-      <option value="Ford">Ford</option>
-      <option value="Peugeot">Peugeot</option>
-      <option value="Renault">Renault</option>
-      <option value="Citroën">Citroën</option>
-      <option value="Toyota">Toyota</option>
-      <option value="Honda">Honda</option>
-      <option value="Hyundai">Hyundai</option>
-      <option value="Kia">Kia</option>
-      <option value="Mazda">Mazda</option>
-      <option value="Volvo">Volvo</option>
-      <option value="Nissan">Nissan</option>
-      <option value="Fiat">Fiat</option>
-      <option value="Skoda">Skoda</option>
-      <option value="Seat">Seat</option>
-      <option value="Mini">Mini</option>
-      <option value="Dacia">Dacia</option>
-      <option value="Suzuki">Suzuki</option>
-      <option value="Chevrolet">Chevrolet</option>
-    </select><br /><br />
+    <div>
+      <label for="merk">Merk:</label><br>
+      <select name="merk" id="merk">
+        <option value="">Alle</option>
+        <option value="Audi">Audi</option>
+        <option value="BMW">BMW</option>
+        <option value="Mercedes">Mercedes</option>
+        <option value="Volkswagen">Volkswagen</option>
+        <option value="Renault">Renault</option>
+        <option value="Peugeot">Peugeot</option>
+        <option value="Opel">Opel</option>
+        <option value="Toyota">Toyota</option>
+        <option value="Ford">Ford</option>
+        <option value="Hyundai">Hyundai</option>
+        <!-- Diğer markalar eklenebilir -->
+      </select>
+    </div>
 
-    <label>Model:</label>
-    <input type="text" name="model" placeholder="Bijv. A3, C-Klasse"><br /><br />
+    <div>
+      <label for="model">Model:</label><br>
+      <input type="text" name="model" id="model" placeholder="Bijv. A4">
+    </div>
 
-    <label>Prijs (max):</label>
-    <input type="number" name="prijs" placeholder="Bijv. 10000"><br /><br />
+    <div>
+      <label for="brandstof">Brandstof:</label><br>
+      <select name="brandstof" id="brandstof">
+        <option value="">Alle</option>
+        <option value="Benzine">Benzine</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Hybride">Hybride</option>
+        <option value="Elektrisch">Elektrisch</option>
+      </select>
+    </div>
 
-    <label>Brandstof:</label>
-    <select name="brandstof">
-      <option value="">Alle</option>
-      <option value="Benzine">Benzine</option>
-      <option value="Diesel">Diesel</option>
-      <option value="Hybride">Hybride</option>
-    </select><br /><br />
+    <div>
+      <label for="transmissie">Transmissie:</label><br>
+      <select name="transmissie" id="transmissie">
+        <option value="">Alle</option>
+        <option value="Manueel">Manueel</option>
+        <option value="Automatisch">Automatisch</option>
+      </select>
+    </div>
 
-    <label>Bouwjaar (vanaf):</label>
-    <input type="number" name="bouwjaar" placeholder="Bijv. 2015"><br /><br />
+    <div>
+      <label for="bouwjaar">Bouwjaar (vanaf):</label><br>
+      <input type="number" name="bouwjaar" id="bouwjaar" placeholder="Bijv. 2015">
+    </div>
 
-    <label>Kilometerstand (max):</label>
-    <input type="number" name="km" placeholder="Bijv. 100000"><br /><br />
+    <div>
+      <label for="km">Kilometerstand (max):</label><br>
+      <input type="number" name="km" id="km" placeholder="Bijv. 100000">
+    </div>
 
-    <label>Transmissie:</label>
-    <select name="transmissie">
-      <option value="">Alle</option>
-      <option value="Automatisch">Automatisch</option>
-      <option value="Manueel">Manueel</option>
-    </select><br /><br />
+    <div>
+      <label for="prijs">Prijs (max):</label><br>
+      <input type="number" name="prijs" id="prijs" placeholder="Bijv. 15000">
+    </div>
 
-    <button type="submit">Filter toepassen</button>
+    <div>
+      <label for="type">Type:</label><br>
+      <select name="type" id="type">
+        <option value="">Alle</option>
+        <option value="Koop">Koop</option>
+        <option value="Lease">Lease</option>
+      </select>
+    </div>
+
+    <div style="align-self: flex-end;">
+      <button type="submit">Filter toepassen</button>
+    </div>
   </form>
-
-  <div id="resultaatContainer">
-    <!-- Gefilterde resultaten verschijnen hier -->
-  </div>
 
   <script>
     document.getElementById('filterForm').addEventListener('submit', function(e) {
       e.preventDefault();
-
-      const advertenties = [
-        {
-          merk: "Audi",
-          model: "A3",
-          prijs: 4500,
-          bouwjaar: 2014,
-          km: 95000,
-          brandstof: "Benzine",
-          transmissie: "Manueel",
-          foto: "https://via.placeholder.com/150?text=Audi+A3"
-        },
-        {
-          merk: "BMW",
-          model: "X5",
-          prijs: 8500,
-          bouwjaar: 2017,
-          km: 120000,
-          brandstof: "Diesel",
-          transmissie: "Automatisch",
-          foto: "https://via.placeholder.com/150?text=BMW+X5"
-        },
-        {
-          merk: "Mercedes",
-          model: "C-Klasse",
-          prijs: 6500,
-          bouwjaar: 2016,
-          km: 80000,
-          brandstof: "Hybride",
-          transmissie: "Automatisch",
-          foto: "https://via.placeholder.com/150?text=Mercedes+C"
-        }
-      ];
-
-      const form = e.target;
-      const filters = {
-        merk: form.merk.value,
-        model: form.model.value.toLowerCase(),
-        prijs: form.prijs.value,
-        brandstof: form.brandstof.value,
-        bouwjaar: form.bouwjaar.value,
-        km: form.km.value,
-        transmissie: form.transmissie.value
-      };
-
-      const gefilterd = advertenties.filter(ad => {
-        return (!filters.merk || ad.merk === filters.merk) &&
-               (!filters.model || ad.model.toLowerCase().includes(filters.model)) &&
-               (!filters.prijs || ad.prijs <= parseInt(filters.prijs)) &&
-               (!filters.brandstof || ad.brandstof === filters.brandstof) &&
-               (!filters.bouwjaar || ad.bouwjaar >= parseInt(filters.bouwjaar)) &&
-               (!filters.km || ad.km <= parseInt(filters.km)) &&
-               (!filters.transmissie || ad.transmissie === filters.transmissie);
-      });
-
-      const container = document.getElementById("resultaatContainer");
-      container.innerHTML = "";
-
-      if (gefilterd.length === 0) {
-        container.innerHTML = "<p>Geen resultaten gevonden.</p>";
-      } else {
-        gefilterd.forEach(ad => {
-          const div = document.createElement("div");
-          div.innerHTML = `
-            <img src="${ad.foto}" width="150"><br>
-            <strong>${ad.merk} ${ad.model}</strong><br>
-            Prijs: €${ad.prijs}<br>
-            Bouwjaar: ${ad.bouwjaar}<br>
-            Kilometerstand: ${ad.km.toLocaleString()} km<br>
-            Brandstof: ${ad.brandstof}<br>
-            Transmissie: ${ad.transmissie}<br><br>
-          `;
-          container.appendChild(div);
-        });
-      }
+      alert("Filter wordt toegepast...");
+      // Buraya filtreleme işlemleri eklenecek (örn. fetch API ile veri çekme)
     });
   </script>
 
