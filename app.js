@@ -11,14 +11,15 @@ const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value) || In
     .then((res) => res.json())
     .then((data) => {
       const gefilterdeAdvertenties = data.filter((listing) => {
-        return (
-          (merk === "" || listing.merk.toLowerCase().includes(merk)) &&
-          (brandstof === "Alle" || listing.brandstof === brandstof) &&
-          (transmissie === "Alle" || listing.transmissie === transmissie) &&
-          listing.jaar >= jaarMin &&
-          listing.jaar <= bouwjaarTot &&
-          listing.prijs <= prijsMax
-        );
+      return (
+  (merk === "" || listing.merk.toLowerCase().includes(merk)) &&
+  (brandstof === "Alle" || listing.brandstof === brandstof) &&
+  (transmissie === "Alle" || listing.transmissie === transmissie) &&
+  listing.jaar >= jaarMin &&
+  listing.jaar <= bouwjaarTot &&
+  listing.km <= kmMax &&
+  listing.prijs <= prijsMax
+);
       });
 
       advertentiesTonen(gefilterdeAdvertenties);
