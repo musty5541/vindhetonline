@@ -7,6 +7,12 @@
     margin-bottom: 20px;
   }
 
+  form#filterForm label {
+    font-weight: bold;
+    margin-top: 8px;
+    display: block;
+  }
+
   form#filterForm input,
   form#filterForm select,
   form#filterForm button {
@@ -38,6 +44,11 @@
     form#filterForm input,
     form#filterForm select {
       flex: 1 1 45%;
+    }
+
+    form#filterForm button {
+      flex: 1 1 100%;
+      max-width: 200px;
     }
   }
 </style>
