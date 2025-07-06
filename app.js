@@ -26,3 +26,4 @@ const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value) || In
     });
 }
 const bouwjaarTot = parseInt(document.getElementById("bouwjaarTot").value);
+const kmMax = parseInt(document.getElementById("kmMax").value) || Infinity;
