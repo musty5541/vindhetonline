@@ -1,1 +1,44 @@
-
+[
+  {
+    "titel": "Audi A3 2015",
+    "merk": "Audi",
+    "model": "A3",
+    "prijs": "8500",
+    "categorie": "Auto",
+    "jaar": "2015",
+    "brandstof": "Diesel",
+    "transmissie": "Automaat",
+    "kilometerstand": "123000",
+    "afbeeldingen": ["https://via.placeholder.com/300x200?text=Audi+A3"]
+  },
+  {
+    "titel": "Samsung Smart TV 50\"",
+    "merk": "Samsung",
+    "model": "50TU7070",
+    "prijs": "400",
+    "categorie": "Elektronica",
+    "jaar": "2020",
+    "afbeeldingen": ["https://via.placeholder.com/300x200?text=Samsung+TV"]
+  },
+  {
+    "titel": "Ikea Klippan Sofa",
+    "merk": "Ikea",
+    "model": "Klippan",
+    "prijs": "75",
+    "categorie": "Meubels",
+    "jaar": "2018",
+    "afbeeldingen": ["https://via.placeholder.com/300x200?text=Klippan+Sofa"]
+  },
+  {
+    "titel": "Volkswagen Golf 7",
+    "merk": "Volkswagen",
+    "model": "Golf",
+    "prijs": "9900",
+    "categorie": "Auto",
+    "jaar": "2016",
+    "brandstof": "Benzine",
+    "transmissie": "Manueel",
+    "kilometerstand": "98000",
+    "afbeeldingen": ["https://via.placeholder.com/300x200?text=Golf+7"]
+  }
+]
