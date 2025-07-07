@@ -1,23 +1,30 @@
 [
   {
-    "title": "Volkswagen Golf",
-    "price": "7500",
-    "description": "Zeer nette auto, 2015 bouwjaar",
-    "category": "Auto's",
-    "image": "https://via.placeholder.com/400x250"
+    "titel": "Samsung Galaxy S21",
+    "beschrijving": "Perfecte staat, met originele doos",
+    "prijs": 350,
+    "categorie": "Elektronica",
+    "foto": "https://via.placeholder.com/300x200?text=Samsung+S21"
   },
   {
-    "title": "Samsung Smart TV",
-    "price": "350",
-    "description": "55 inch, 4K resolutie",
-    "category": "Elektronica",
-    "image": "https://via.placeholder.com/400x250"
+    "titel": "IKEA Eetkamerstoel",
+    "beschrijving": "Nauwelijks gebruikt",
+    "prijs": 25,
+    "categorie": "Meubels",
+    "foto": "https://via.placeholder.com/300x200?text=Stoel"
   },
   {
-    "title": "Gitaar Fender",
-    "price": "200",
-    "description": "Perfecte staat, ideaal voor beginners",
-    "category": "Muziekinstrumenten",
-    "image": "https://via.placeholder.com/400x250"
+    "titel": "Gitaar Yamaha",
+    "beschrijving": "Akoestisch, zeer goede conditie",
+    "prijs": 120,
+    "categorie": "Muziekinstrumenten",
+    "foto": "https://via.placeholder.com/300x200?text=Gitaar"
+  },
+  {
+    "titel": "Tuinbank",
+    "beschrijving": "Houten tuinbank voor 3 personen",
+    "prijs": 45,
+    "categorie": "Tuin",
+    "foto": "https://via.placeholder.com/300x200?text=Tuinbank"
   }
 ]
