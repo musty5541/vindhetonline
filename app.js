@@ -1,83 +1,122 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const selectedCategory = params.get("category") || "";
-  const listingsContainer = document.getElementById("listings-container");
-  const searchInput = document.getElementById("search-input");
-  const transmissionFilter = document.getElementById("transmission");
-  const yearFromFilter = document.getElementById("year-from");
-  const yearToFilter = document.getElementById("year-to");
-  const priceMinFilter = document.getElementById("price-min");
-  const priceMaxFilter = document.getElementById("price-max");
-  const kmMaxFilter = document.getElementById("km-max");
-  const fuelFilter = document.getElementById("fuel");
-
-  fetch("../data/listings.json")
-    .then(res => res.json())
-    .then(data => {
-      if (selectedCategory) {
-        document.getElementById("category").value = selectedCategory;
-      }
-
-      applyFilters(data);
-
-      [
-        searchInput, transmissionFilter, yearFromFilter, yearToFilter,
-        priceMinFilter, priceMaxFilter, kmMaxFilter, fuelFilter
-      ].forEach(input => {
-        input.addEventListener("input", () => applyFilters(data));
-      });
-    });
-
-  function applyFilters(data) {
-    const query = searchInput.value.toLowerCase();
-    const category = selectedCategory;
-    const transmission = transmissionFilter.value;
-    const yearFrom = yearFromFilter.value;
-    const yearTo = yearToFilter.value;
-    const priceMin = priceMinFilter.value;
-    const priceMax = priceMaxFilter.value;
-    const kmMax = kmMaxFilter.value;
-    const fuel = fuelFilter.value;
-
-    const filtered = data.filter(item => {
-      return (
-        (!category || item.category === category) &&
-        (!query || item.title.toLowerCase().includes(query)) &&
-        (!transmission || item.transmission === transmission) &&
-        (!fuel || item.fuel === fuel) &&
-        (!yearFrom || parseInt(item.year) >= parseInt(yearFrom)) &&
-        (!yearTo || parseInt(item.year) <= parseInt(yearTo)) &&
-        (!priceMin || parseInt(item.price) >= parseInt(priceMin)) &&
-        (!priceMax || parseInt(item.price) <= parseInt(priceMax)) &&
-        (!kmMax || parseInt(item.kilometers) <= parseInt(kmMax))
-      );
-    });
-
-    renderListings(filtered);
+// Voorbeelddata
+let listings = [
+  {
+    id: 1,
+    title: "2015 Fiat Egea",
+    category: "Auto",
+    price: 18000,
+    image: "https://via.placeholder.com/300x150",
+    description: "Lage km, goed onderhouden."
+  },
+  {
+    id: 2,
+    title: "Sony PlayStation 5",
+    category: "Elektronica",
+    price: 500,
+    image: "https://via.placeholder.com/300x150",
+    description: "Nieuw in doos."
+  },
+  {
+    id: 3,
+    title: "Vintage Leren Jasje",
+    category: "Kleding",
+    price: 120,
+    image: "https://via.placeholder.com/300x150",
+    description: "Uniek item."
   }
+];
 
-  function renderListings(listings) {
-    listingsContainer.innerHTML = "";
+// Categorieën in het Nederlands
+const categories = [
+  "Alles","Auto","Kleding","Sport","Elektronica",
+  "Woning","Spullen","Hobby","Te Huur","Te Koop"
+];
 
-    if (listings.length === 0) {
-      listingsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
-      return;
-    }
+// LocalStorage laden
+if (localStorage.getItem("listingsDemo")) {
+  listings = JSON.parse(localStorage.getItem("listingsDemo"));
+}
 
-    listings.forEach(item => {
-      const div = document.createElement("div");
-      div.classList.add("listing-card");
-      div.innerHTML = `
-        <img src="${item.image}" alt="${item.title}">
-        <h3>${item.title}</h3>
-        <p>Prijs: €${item.price}</p>
-        <p>Bouwjaar: ${item.year}</p>
-        <p>KM: ${item.kilometers}</p>
-        <p>Transmissie: ${item.transmission}</p>
-        <p>Brandstof: ${item.fuel}</p>
-        <p>Categorie: ${item.category}</p>
-      `;
-      listingsContainer.appendChild(div);
-    });
-  }
+// Elementreferenties
+const catList = document.getElementById("category-list");
+const cards   = document.getElementById("cards");
+const formDiv = document.getElementById("listing-form");
+const showBtn = document.getElementById("show-form");
+const cancel  = document.getElementById("cancel");
+const form    = document.getElementById("form");
+
+// Categorie-pills maken
+categories.forEach((cat, i) => {
+  const li = document.createElement("li");
+  li.className = "nav-item";
+  li.innerHTML = `
+    <a href="#" class="nav-link${i===0?" active":""}" data-cat="${cat}">
+      ${cat}
+    </a>`;
+  catList.appendChild(li);
 });
+
+// Renderfunctie
+function render(category = "Alles") {
+  cards.innerHTML = "";
+  const filtered = category === "Alles"
+    ? listings
+    : listings.filter(l => l.category === category);
+
+  if (!filtered.length) {
+    cards.innerHTML = "<p class='text-muted'>Geen advertenties gevonden.</p>";
+    return;
+  }
+
+  filtered.forEach(item => {
+    const col = document.createElement("div");
+    col.className = "col-md-4";
+    col.innerHTML = `
+      <div class="card h-100">
+        <img src="${item.image || 'https://via.placeholder.com/300x150'}" class="card-img-top">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">${item.title}</h5>
+          <p class="card-text text-success fw-bold">€ ${item.price}</p>
+          <p class="card-text">${item.description || ''}</p>
+        </div>
+      </div>`;
+    cards.appendChild(col);
+  });
+}
+
+// Categorie-selectie
+catList.addEventListener("click", e => {
+  if (!e.target.matches("a")) return;
+  e.preventDefault();
+
+  catList.querySelectorAll("a").forEach(a => a.classList.remove("active"));
+  e.target.classList.add("active");
+  render(e.target.dataset.cat);
+});
+
+// Eerste render
+render();
+
+// Formulier tonen/verbergen
+showBtn.onclick = () => formDiv.classList.toggle("d-none");
+cancel.onclick  = () => formDiv.classList.add("d-none");
+
+// Nieuwe advertentie toevoegen
+form.onsubmit = e => {
+  e.preventDefault();
+  const newItem = {
+    id: Date.now(),
+    title: form.title.value,
+    category: form.category.value,
+    price: form.price.value,
+    image: form.image.value,
+    description: form.description.value
+  };
+  listings.push(newItem);
+  localStorage.setItem("listingsDemo", JSON.stringify(listings));
+  form.reset();
+  formDiv.classList.add("d-none");
+
+  const activeCat = catList.querySelector("a.active").dataset.cat;
+  render(activeCat);
+};
