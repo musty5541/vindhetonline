@@ -15,20 +15,8 @@
       <select onchange="changeLang(this.value)">
         <option value="nl">Nederlands</option>
         <option value="tr">Türkçe</option>
-    {
-  "welcome": "Willkommen, Mustafa!",
-  "login": "Anmelden",
-  "email": "E-Mail",
-  "password": "Passwort",
-  "submit": "Einloggen"
-}  
-        {
-  "welcome": "Bienvenue, Mustafa!",
-  "login": "Connexion",
-  "email": "E-mail",
-  "password": "Mot de passe",
-  "submit": "Se connecter"
-}  
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
       </select>
       <div class="login-mini">
         <input type="email" id="email" placeholder="E-mail" />
@@ -46,9 +34,9 @@
 
   <main>
     <section class="recent-listings">
-      <h2>Nieuwste advertenties</h2>
+      <h2 id="recent-title">Nieuwste advertenties</h2>
       <div class="listing-grid" id="listing-container">
-        <!-- JSON'den dinamik ilanlar burada gösterilecek -->
+        <!-- Dinamik ilanlar buraya gelecek -->
       </div>
     </section>
   </main>
