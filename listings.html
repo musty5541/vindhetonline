@@ -1,77 +1,61 @@
-<!DOCTYPE html><html lang="nl"><head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VindHetOnline - Alle Advertenties</title>
-  <link rel="stylesheet" href="style.css" />
-</head><body>
-  <header>
-    <h1>VindHetOnline</h1>
-    <nav>
-      <ul class="categories">
-        <li><a href="#" data-category="alle">Alle</a></li>
-        <li><a href="#" data-category="auto">Auto's</a></li>
-        <li><a href="#" data-category="vastgoed">Vastgoed</a></li>
-        <li><a href="#" data-category="electronica">Elektronica</a></li>
-        <li><a href="#" data-category="kleding">Kleding</a></li>
-        <li><a href="#" data-category="meubels">Meubels</a></li>
-        <li><a href="#" data-category="tuin">Tuin</a></li>
-        <li><a href="#" data-category="huisdieren">Huisdieren</a></li>
-        <li><a href="#" data-category="muziekinstrumenten">Muziekinstrumenten</a></li>
-        <li><a href="#" data-category="overig">Overig</a></li>
-      </ul>
-    </nav>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Zoek in deze categorie..." />
-    </div>
-  </header>  <main>
-    <section id="advertenties" class="advertenties-grid">
-      <!-- Advertenties komen hier -->
-    </section>
-  </main>  <script>
-    const advertentiesSectie = document.getElementById('advertenties');
-    const searchInput = document.getElementById('searchInput');
-    let actieveCategorie = 'alle';
-
-    async function laadAdvertenties() {
-      const response = await fetch('data/listings.json');
-      const advertenties = await response.json();
-      toonAdvertenties(advertenties);
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advertenties</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
     }
-
-    function toonAdvertenties(advertenties) {
-      advertentiesSectie.innerHTML = '';
-      const gefilterd = advertenties.filter(ad => {
-        const juisteCategorie = actieveCategorie === 'alle' || ad.categorie === actieveCategorie;
-        const zoekterm = searchInput.value.toLowerCase();
-        const matchZoek = ad.titel.toLowerCase().includes(zoekterm) || (ad.beschrijving && ad.beschrijving.toLowerCase().includes(zoekterm));
-        return juisteCategorie && matchZoek;
-      });
-
-      if (gefilterd.length === 0) {
-        advertentiesSectie.innerHTML = '<p>Geen advertenties gevonden.</p>';
-        return;
-      }
-
-      gefilterd.forEach(ad => {
-        const div = document.createElement('div');
-        div.className = 'advertentie';
-        div.innerHTML = `
-          <img src="${ad.afbeeldingen[0]}" alt="${ad.titel}" />
-          <h3>${ad.titel}</h3>
-          <p>${ad.prijs} €</p>
-        `;
-        advertentiesSectie.appendChild(div);
-      });
+    h2 {
+      text-align: center;
     }
+    .listing {
+      background: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 500px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .listing img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="category-title">Alle advertenties</h2>
 
-    document.querySelectorAll('[data-category]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        actieveCategorie = link.dataset.category;
-        laadAdvertenties();
-      });
+  <div id="listings-container"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const category = localStorage.getItem("selectedCategory") || "";
+      document.getElementById("category-title").textContent = category ? `Categorie: ${category}` : "Alle advertenties";
+
+      fetch("data/listings.json")
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById("listings-container");
+          const filtered = category ? data.filter(item => item.category === category) : data;
+          filtered.forEach(item => {
+            const div = document.createElement("div");
+            div.classList.add("listing");
+            div.innerHTML = `
+              <h3>${item.title}</h3>
+              <p><strong>Prijs:</strong> €${item.price}</p>
+              <p><strong>Beschrijving:</strong> ${item.description}</p>
+              ${item.image ? `<img src="${item.image}" alt="Foto">` : ''}
+            `;
+            container.appendChild(div);
+          });
+        });
     });
-
-    searchInput.addEventListener('input', laadAdvertenties);
-    laadAdvertenties();
-  </script></body></html>
+  </script>
+</body>
+</html>
