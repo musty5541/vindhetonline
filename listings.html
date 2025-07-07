@@ -181,7 +181,21 @@
     // İlk açılışta URL'den kategori al
     const initialCategory = getQueryParam("categorie") || "Alle";
     renderAds(initialCategory);
-  </script>
+<script>
+  // URL'den kategori parametresini al
+  const params = new URLSearchParams(window.location.search);
+  const selectedCategory = params.get('category');
 
+  if (selectedCategory) {
+    // Tüm ilanları döngüyle kontrol et
+    document.querySelectorAll('.listing').forEach(listing => {
+      const cat = listing.getAttribute('data-category');
+      // Eğer kategori uyuşmuyorsa ilanı gizle
+      if (cat !== selectedCategory) {
+        listing.style.display = 'none';
+      }
+    });
+  }
+</script>
 </body>
 </html>
