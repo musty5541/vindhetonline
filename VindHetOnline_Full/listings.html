@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Advertenties - VindHetOnline</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .advertentie {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    .advertentie img {
+      max-width: 200px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
 
+  <h1>Advertenties</h1>
+  <div id="advertenties">Laden...</div>
+
+  <script>
+    async function fetchData() {
+      try {
+        const response = await fetch('/listings.json'); // ✅ JSON dosyası public klasörde olacak
+        if (!response.ok) throw new Error('Data niet gevonden');
+        const data = await response.json();
+        renderAdvertenties(data);
+      } catch (error) {
+        document.getElementById('advertenties').innerText = 'Fout bij het laden van data.';
+        console.error(error);
+      }
+    }
+
+    function renderAdvertenties(data) {
+      const container = document.getElementById('advertenties');
+      container.innerHTML = '';
+
+      if (data.length === 0) {
+        container.innerHTML = '<p>Geen advertenties gevonden.</p>';
+        return;
+      }
+
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'advertentie';
+        div.innerHTML = `
+          <h2>${item.titel}</h2>
+          <p><strong>Merk:</strong> ${item.merk} | <strong>Model:</strong> ${item.model}</p>
+          <p><strong>Prijs:</strong> €${item.prijs}</p>
+          ${item.afbeeldingen && item.afbeeldingen.length > 0 ? `<img src="${item.afbeeldingen[0]}" alt="${item.titel}" />` : ''}
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    fetchData();
+  </script>
+
+</body>
+</html>
