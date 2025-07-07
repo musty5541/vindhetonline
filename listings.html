@@ -92,6 +92,66 @@
     searchBox.addEventListener("input", renderAds);
 
     fetchAds();
-  </script>
+ <script>
+  async function fetchAds() {
+    const adsContainer = document.getElementById('adsContainer');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const searchBox = document.getElementById('searchBox');
+
+    adsContainer.innerHTML = 'Laden...';
+
+    try {
+      const res = await fetch('data/listings.json');
+      const ads = await res.json();
+
+      // Kategorileri filtre dropdown'a ekle
+      const categories = [...new Set(ads.map(ad => ad.category))];
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        categoryFilter.appendChild(option);
+      });
+
+      function renderAds() {
+        const selectedCat = categoryFilter.value;
+        const searchTerm = searchBox.value.toLowerCase();
+        const filtered = ads.filter(ad =>
+          (selectedCat === '' || ad.category === selectedCat) &&
+          (ad.title.toLowerCase().includes(searchTerm) || ad.description.toLowerCase().includes(searchTerm))
+        );
+
+        adsContainer.innerHTML = '';
+        if (filtered.length === 0) {
+          adsContainer.innerHTML = '<p>Geen resultaten gevonden.</p>';
+          return;
+        }
+
+        filtered.forEach(ad => {
+          const div = document.createElement('div');
+          div.className = 'ad';
+          div.innerHTML = `
+            <h3>${ad.title}</h3>
+            <p><strong>Categorie:</strong> ${ad.category}</p>
+            <p>${ad.description}</p>
+            ${ad.imageUrl ? `<img src="${ad.imageUrl}" style="max-width:100%; border-radius:10px;" />` : ''}
+          `;
+          adsContainer.appendChild(div);
+        });
+      }
+
+      categoryFilter.addEventListener('change', renderAds);
+      searchBox.addEventListener('input', renderAds);
+
+      renderAds();
+
+    } catch (err) {
+      adsContainer.innerHTML = '<p>Fout bij het laden van advertenties.</p>';
+      console.error(err);
+    }
+  }
+
+  fetchAds();
+</script> 
 </body>
 </html>
