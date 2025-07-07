@@ -1,125 +1,88 @@
-<!DOCTYPE html><html lang="nl">
+<!DOCTYPE html>
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VindHetOnline - Advertenties</title>
-  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #004aad;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    #ads-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .ad-card {
-      background: white;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .ad-card:hover {
-      transform: scale(1.02);
-    }
-    .ad-card img {
-      width: 100%;
-      border-radius: 6px;
-    }
-    .filters {
-      padding: 1rem;
-      background: white;
-      margin: 1rem;
-      border-radius: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .filters input, .filters select {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      min-width: 120px;
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .filter { margin-bottom: 20px; }
+    .advertentie { border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; border-radius: 8px; }
+    .advertentie img { max-width: 150px; border-radius: 5px; display: block; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>VindHetOnline Advertenties</h1>
-  </header>  <section class="filters">
-    <input type="text" id="searchInput" placeholder="Zoek...">
-    <select id="categoryFilter">
-      <option value="">Alle categorieën</option>
+
+  <h1>Advertenties</h1>
+
+  <div class="filter">
+    <label for="categorie">Categorie:</label>
+    <select id="categorie">
+      <option value="">Alle</option>
       <option value="Auto">Auto</option>
       <option value="Elektronica">Elektronica</option>
-      <option value="Vastgoed">Vastgoed</option>
-      <option value="Kleding">Kleding</option>
       <option value="Meubels">Meubels</option>
-      <option value="Tuin">Tuin</option>
-      <option value="Dieren">Dieren</option>
-      <option value="Muziekinstrumenten">Muziekinstrumenten</option>
-      <option value="Overig">Overig</option>
     </select>
-  </section>  <div id="ads-container">Laden...</div>  
- <script>
-async function fetchAds() {
-  const res = await fetch('data/listings.json');
-  const ads = await res.json();
-  const adsContainer = document.getElementById('ads-container');
-  const searchBox = document.getElementById('searchBox');
-  const categoryFilter = document.getElementById('categoryFilter');
 
-  function renderAds() {
-    const searchValue = searchBox.value.toLowerCase();
-    const selectedCategory = categoryFilter.value;
+    <label for="merk">Merk:</label>
+    <input type="text" id="merk" placeholder="Bijv: Audi, Samsung" />
+  </div>
 
-    const filteredAds = ads.filter(ad => {
-      const matchesCategory = selectedCategory === "" || ad.categorie === selectedCategory;
-      const matchesSearch =
-        ad.titel.toLowerCase().includes(searchValue) ||
-        (ad.merk && ad.merk.toLowerCase().includes(searchValue)) ||
-        (ad.model && ad.model.toLowerCase().includes(searchValue));
-      return matchesCategory && matchesSearch;
-    });
+  <div id="advertenties">Laden...</div>
 
-    adsContainer.innerHTML = "";
+  <script>
+    let advertentiesData = [];
 
-    if (filteredAds.length === 0) {
-      adsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
-      return;
+    async function fetchData() {
+      try {
+        const res = await fetch('/data/listings.json');
+        if (!res.ok) throw new Error('Fout bij laden');
+        advertentiesData = await res.json();
+        renderAdvertenties(advertentiesData);
+      } catch (err) {
+        document.getElementById('advertenties').innerText = 'Fout bij het laden van data.';
+        console.error(err);
+      }
     }
 
-    filteredAds.forEach(ad => {
-      const div = document.createElement("div");
-      div.className = "ad";
-      div.innerHTML = `
-        <img src="${ad.foto}" alt="${ad.titel}" style="width: 100%; height: auto;" />
-        <h2>${ad.titel}</h2>
-        <p><strong>Merk:</strong> ${ad.merk || ""}</p>
-        <p><strong>Model:</strong> ${ad.model || ""}</p>
-        <p><strong>Bouwjaar:</strong> ${ad.jaar || ""}</p>
-        <p><strong>Prijs:</strong> €${ad.prijs}</p>
-      `;
-      adsContainer.appendChild(div);
-    });
-  }
+    function renderAdvertenties(data) {
+      const container = document.getElementById('advertenties');
+      container.innerHTML = '';
+      if (data.length === 0) {
+        container.innerHTML = '<p>Geen advertenties gevonden.</p>';
+        return;
+      }
 
-  searchBox.addEventListener("input", renderAds);
-  categoryFilter.addEventListener("change", renderAds);
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'advertentie';
+        div.innerHTML = `
+          <h2>${item.titel}</h2>
+          <p><strong>Merk:</strong> ${item.merk || '-'} | <strong>Model:</strong> ${item.model || '-'}</p>
+          <p><strong>Prijs:</strong> €${item.prijs}</p>
+          ${item.afbeeldingen?.[0] ? `<img src="${item.afbeeldingen[0]}" alt="${item.titel}" />` : ''}
+        `;
+        container.appendChild(div);
+      });
+    }
 
-  renderAds();
-}
-fetchAds();
-</script> </body>
+    function applyFilters() {
+      const categorie = document.getElementById('categorie').value.toLowerCase();
+      const merk = document.getElementById('merk').value.toLowerCase();
+
+      const filtered = advertentiesData.filter(item => {
+        const matchCategorie = categorie ? item.categorie?.toLowerCase() === categorie : true;
+        const matchMerk = merk ? item.merk?.toLowerCase().includes(merk) : true;
+        return matchCategorie && matchMerk;
+      });
+
+      renderAdvertenties(filtered);
+    }
+
+    document.getElementById('categorie').addEventListener('change', applyFilters);
+    document.getElementById('merk').addEventListener('input', applyFilters);
+
+    fetchData();
+  </script>
+
+</body>
 </html>
