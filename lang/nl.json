@@ -1,1 +1,8 @@
-
+{
+  "welcome": "Welkom bij VindhetOnline",
+  "login": "Inloggen",
+  "email": "E-mail",
+  "password": "Wachtwoord",
+  "submit": "Inloggen",
+  "recent": "Nieuwste advertenties"
+}
