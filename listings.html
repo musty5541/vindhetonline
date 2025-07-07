@@ -1,201 +1,77 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
+<!DOCTYPE html><html lang="nl"><head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VindHetOnline - Advertenties</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 20px;
-      color: #333;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VindHetOnline - Alle Advertenties</title>
+  <link rel="stylesheet" href="style.css" />
+</head><body>
+  <header>
+    <h1>VindHetOnline</h1>
+    <nav>
+      <ul class="categories">
+        <li><a href="#" data-category="alle">Alle</a></li>
+        <li><a href="#" data-category="auto">Auto's</a></li>
+        <li><a href="#" data-category="vastgoed">Vastgoed</a></li>
+        <li><a href="#" data-category="electronica">Elektronica</a></li>
+        <li><a href="#" data-category="kleding">Kleding</a></li>
+        <li><a href="#" data-category="meubels">Meubels</a></li>
+        <li><a href="#" data-category="tuin">Tuin</a></li>
+        <li><a href="#" data-category="huisdieren">Huisdieren</a></li>
+        <li><a href="#" data-category="muziekinstrumenten">Muziekinstrumenten</a></li>
+        <li><a href="#" data-category="overig">Overig</a></li>
+      </ul>
+    </nav>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Zoek in deze categorie..." />
+    </div>
+  </header>  <main>
+    <section id="advertenties" class="advertenties-grid">
+      <!-- Advertenties komen hier -->
+    </section>
+  </main>  <script>
+    const advertentiesSectie = document.getElementById('advertenties');
+    const searchInput = document.getElementById('searchInput');
+    let actieveCategorie = 'alle';
+
+    async function laadAdvertenties() {
+      const response = await fetch('data/listings.json');
+      const advertenties = await response.json();
+      toonAdvertenties(advertenties);
     }
 
-    h1 {
-      text-align: center;
-      font-size: 2.5em;
-      margin-bottom: 20px;
-    }
+    function toonAdvertenties(advertenties) {
+      advertentiesSectie.innerHTML = '';
+      const gefilterd = advertenties.filter(ad => {
+        const juisteCategorie = actieveCategorie === 'alle' || ad.categorie === actieveCategorie;
+        const zoekterm = searchInput.value.toLowerCase();
+        const matchZoek = ad.titel.toLowerCase().includes(zoekterm) || (ad.beschrijving && ad.beschrijving.toLowerCase().includes(zoekterm));
+        return juisteCategorie && matchZoek;
+      });
 
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    .filter-btn {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-
-    .filter-btn:hover {
-      background-color: #0056b3;
-    }
-
-    .ad-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    .ad {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .ad img {
-      width: 100%;
-      max-height: 250px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .ad-title {
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-
-    .ad-category {
-      font-style: italic;
-      color: #666;
-    }
-
-    @media (min-width: 600px) {
-      .ad {
-        flex-direction: row;
-        gap: 20px;
-      }
-
-      .ad img {
-        max-width: 200px;
-      }
-
-      .ad-content {
-        flex: 1;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Advertenties</h1>
-
-  <div class="filters">
-    <button class="filter-btn" onclick="filterAds('Alle')">Alle</button>
-    <button class="filter-btn" onclick="filterAds('Auto')">Auto</button>
-    <button class="filter-btn" onclick="filterAds('Vastgoed')">Vastgoed</button>
-    <button class="filter-btn" onclick="filterAds('Elektronica')">Elektronica</button>
-    <button class="filter-btn" onclick="filterAds('Kleding')">Kleding</button>
-    <button class="filter-btn" onclick="filterAds('Meubels')">Meubels</button>
-    <button class="filter-btn" onclick="filterAds('Speelgoed')">Speelgoed</button>
-    <button class="filter-btn" onclick="filterAds('Tuin')">Tuin</button>
-    <button class="filter-btn" onclick="filterAds('Huisdieren')">Huisdieren</button>
-    <button class="filter-btn" onclick="filterAds('Muziekinstrumenten')">Muziekinstrumenten</button>
-    <button class="filter-btn" onclick="filterAds('Overig')">Overig</button>
-  </div>
-
-  <div class="ad-container" id="ad-container">
-    <!-- İlanlar buraya JS ile eklenecek -->
-  </div>
-
-  <script>
-    const ads = [
-      {
-        title: "Opel Astra 2015",
-        price: "€9500",
-        description: "Goed onderhouden auto, klaar om te rijden.",
-        category: "Auto",
-        image: "https://via.placeholder.com/400x250?text=Opel+Astra"
-      },
-      {
-        title: "iPhone 13 Pro",
-        price: "€850",
-        description: "Zo goed als nieuw, inclusief doos en accessoires.",
-        category: "Elektronica",
-        image: "https://via.placeholder.com/400x250?text=iPhone+13+Pro"
-      },
-      {
-        title: "2-kamer appartement te huur",
-        price: "€950/maand",
-        description: "Centrum van Antwerpen, volledig gemeubileerd.",
-        category: "Vastgoed",
-        image: "https://via.placeholder.com/400x250?text=Appartement"
-      }
-    ];
-
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
-
-    function renderAds(category = "Alle") {
-      const container = document.getElementById("ad-container");
-      container.innerHTML = "";
-
-      const filtered = category === "Alle"
-        ? ads
-        : ads.filter(ad => ad.category === category);
-
-      if (filtered.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>Geen advertenties gevonden.</p>";
+      if (gefilterd.length === 0) {
+        advertentiesSectie.innerHTML = '<p>Geen advertenties gevonden.</p>';
         return;
       }
 
-      filtered.forEach(ad => {
-        const div = document.createElement("div");
-        div.className = "ad";
+      gefilterd.forEach(ad => {
+        const div = document.createElement('div');
+        div.className = 'advertentie';
         div.innerHTML = `
-          <img src="${ad.image}" alt="${ad.title}" />
-          <div class="ad-content">
-            <div class="ad-title">${ad.title}</div>
-            <div>${ad.description}</div>
-            <div><strong>Prijs:</strong> ${ad.price}</div>
-            <div class="ad-category"><strong>Categorie:</strong> ${ad.category}</div>
-          </div>
+          <img src="${ad.afbeeldingen[0]}" alt="${ad.titel}" />
+          <h3>${ad.titel}</h3>
+          <p>${ad.prijs} €</p>
         `;
-        container.appendChild(div);
+        advertentiesSectie.appendChild(div);
       });
     }
 
-    function filterAds(category) {
-      renderAds(category);
-    }
-
-    // İlk açılışta URL'den kategori al
-    const initialCategory = getQueryParam("categorie") || "Alle";
-    renderAds(initialCategory);
-<script>
-  // URL'den kategori parametresini al
-  const params = new URLSearchParams(window.location.search);
-  const selectedCategory = params.get('category');
-
-  if (selectedCategory) {
-    // Tüm ilanları döngüyle kontrol et
-    document.querySelectorAll('.listing').forEach(listing => {
-      const cat = listing.getAttribute('data-category');
-      // Eğer kategori uyuşmuyorsa ilanı gizle
-      if (cat !== selectedCategory) {
-        listing.style.display = 'none';
-      }
+    document.querySelectorAll('[data-category]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        actieveCategorie = link.dataset.category;
+        laadAdvertenties();
+      });
     });
-  }
-</script>
-</body>
-</html>
+
+    searchInput.addEventListener('input', laadAdvertenties);
+    laadAdvertenties();
+  </script></body></html>
