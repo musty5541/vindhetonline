@@ -1,72 +1,51 @@
 body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
   margin: 0;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
-  color: #222;
+  padding: 0;
+  color: #333;
 }
 
-h1 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.category-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.category-buttons button {
-  background-color: #007bff;
+header {
+  background-color: #0077cc;
   color: white;
-  border: none;
-  border-radius: 15px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.category-buttons button:hover {
-  background-color: #0056b3;
-}
-
-.listing-card {
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto 30px auto;
-}
-
-.listing-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  object-fit: cover;
-  max-height: 250px;
-  margin-bottom: 10px;
-}
-
-.listing-title {
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.listing-details {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.no-results {
+  padding: 2rem;
   text-align: center;
+}
+
+.categorieën {
+  padding: 2rem;
+  text-align: center;
+}
+
+.categorie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.categorie {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: #0077cc;
   font-size: 1.2rem;
-  color: #777;
-  margin-top: 40px;
+  transition: transform 0.2s;
+}
+
+.categorie:hover {
+  transform: scale(1.05);
+  background-color: #eef6ff;
+}
+
+footer {
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #666;
 }
