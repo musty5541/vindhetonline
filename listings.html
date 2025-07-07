@@ -1,73 +1,97 @@
-<!DOCTYPE html>
-<html lang="nl">
+<!DOCTYPE html><html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Advertenties - VindHetOnline.be</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advertenties - VindHetOnline</title>
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 1rem; background: #f5f5f5; }
-    h1 { text-align: center; }
-    .search-box { max-width: 400px; margin: 1rem auto; display: flex; }
-    .search-box input { flex: 1; padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
-    .search-box button { padding: 0.5rem 1rem; border: none; background: #007bff; color: white; border-radius: 0 5px 5px 0; cursor: pointer; }
-    .ads { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 2rem; }
-    .ad { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .ad img { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
-    .ad h2 { font-size: 1.1rem; margin: 0.5rem 0 0.2rem; }
-    .ad p { margin: 0; font-size: 0.9rem; color: #555; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      padding: 1rem;
+    }
+    .filters, .ads {
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+    .filters input {
+      width: 100%;
+      padding: 0.7rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    .ad {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .ad h3 {
+      margin: 0 0 0.5rem;
+    }
   </style>
 </head>
 <body>
   <h1>Advertenties</h1>
-
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Zoek bijvoorbeeld 'Samsung GSM'..." />
-    <button onclick="filterAds()">Zoeken</button>
+  <div class="filters">
+    <input type="text" id="searchBox" placeholder="Zoek bijvoorbeeld: Samsung GSM">
   </div>
+  <div class="ads" id="adsContainer"></div>  <script>
+    const ads = [
+      { titel: "Audi A4 2015", categorie: "Auto's", beschrijving: "Zeer nette Audi A4", zoekwoorden: ["audi", "a4", "auto"] },
+      { titel: "Samsung Galaxy S21", categorie: "Elektronica", beschrijving: "Nieuwe staat", zoekwoorden: ["samsung", "gsm", "telefoon"] },
+      { titel: "Houten Eettafel", categorie: "Meubels", beschrijving: "Massief houten tafel", zoekwoorden: ["tafel", "eetkamer"] },
+      { titel: "Gitaar Yamaha", categorie: "Muziekinstrumenten", beschrijving: "Akoestisch", zoekwoorden: ["gitaar", "muziek"] },
+      { titel: "Jurk Blauw", categorie: "Kleding", beschrijving: "Maat M, als nieuw", zoekwoorden: ["jurk", "kleding", "blauw"] },
+    ];
 
-  <div class="ads" id="adsContainer">
-    <!-- İlanlar buraya gelecek -->
-  </div>
+    const container = document.getElementById("adsContainer");
+    const searchQuery = localStorage.getItem("searchQuery")?.toLowerCase() || "";
+    const selectedCategory = localStorage.getItem("selectedCategory") || "";
 
-  <script>
-    const adsContainer = document.getElementById('adsContainer');
-    const searchInput = document.getElementById('searchInput');
+    document.getElementById("searchBox").value = searchQuery;
 
-    let allAds = [];
+    function renderAds() {
+      container.innerHTML = "";
+      let filtered = ads;
 
-    async function fetchAds() {
-      const res = await fetch('data/listings.json');
-      const data = await res.json();
-      const selectedCategory = localStorage.getItem('selectedCategory');
-      allAds = data.filter(ad => !selectedCategory || selectedCategory === "Alle" || ad.categorie === selectedCategory);
-      renderAds(allAds);
-    }
+      if (selectedCategory) {
+        filtered = filtered.filter(ad => ad.categorie === selectedCategory);
+      }
+      if (searchQuery) {
+        filtered = filtered.filter(ad =>
+          ad.titel.toLowerCase().includes(searchQuery) ||
+          ad.beschrijving.toLowerCase().includes(searchQuery) ||
+          ad.zoekwoorden.some(w => w.includes(searchQuery))
+        );
+      }
 
-    function renderAds(ads) {
-      adsContainer.innerHTML = "";
-      ads.forEach(ad => {
-        const div = document.createElement('div');
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>Geen advertenties gevonden.</p>";
+        return;
+      }
+
+      filtered.forEach(ad => {
+        const div = document.createElement("div");
         div.className = "ad";
-        div.innerHTML = `
-          <img src="${ad.foto}" alt="${ad.titel}" />
-          <h2>${ad.titel}</h2>
-          <p>${ad.beschrijving}</p>
-          <p><strong>€${ad.prijs}</strong></p>
-        `;
-        adsContainer.appendChild(div);
+        div.innerHTML = `<h3>${ad.titel}</h3><p>${ad.beschrijving}</p><small>${ad.categorie}</small>`;
+        container.appendChild(div);
       });
     }
 
-    function filterAds() {
-      const keyword = searchInput.value.toLowerCase();
-      const filtered = allAds.filter(ad =>
-        ad.titel.toLowerCase().includes(keyword) ||
-        ad.beschrijving.toLowerCase().includes(keyword)
-      );
-      renderAds(filtered);
-    }
+    document.getElementById("searchBox").addEventListener("input", e => {
+      localStorage.setItem("searchQuery", e.target.value);
+      renderAds();
+    });
 
-    fetchAds();
-  </script>
-</body>
+    renderAds();
+  </script></body>
 </html>
