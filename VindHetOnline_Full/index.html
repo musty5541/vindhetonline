@@ -1,34 +1,50 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VindHetOnline</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vindhet Online</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>VindHetOnline.be</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Plaats een advertentie</a>
-      <a href="#">Over ons</a>
-    </nav>
+  <header class="main-header">
+    <div class="logo-area">
+      <h1 id="welcome-text">Welkom bij VindhetOnline</h1>
+    </div>
+    <div class="lang-login">
+      <select onchange="changeLang(this.value)">
+        <option value="nl">Nederlands</option>
+        <option value="tr">Türkçe</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+      </select>
+      <div class="login-mini">
+        <input type="email" id="email" placeholder="E-mail" />
+        <input type="password" id="password" placeholder="Wachtwoord" />
+        <button onclick="login()" id="login-btn">Inloggen</button>
+      </div>
+    </div>
   </header>
+
+  <nav class="main-nav">
+    <a href="#">Plaats advertentie</a>
+    <a href="#">Berichten</a>
+    <a href="#">Uitloggen</a>
+  </nav>
+
   <main>
-    <section id="search">
-      <input type="text" placeholder="Wat zoek je?">
-      <button>Zoek</button>
-    </section>
-    <section id="listings">
-      <h2>Recente Advertenties</h2>
-      <div class="ad">Voorbeeld advertentie 1</div>
-      <div class="ad">Voorbeeld advertentie 2</div>
+    <section class="recent-listings">
+      <h2 id="recent-title">Nieuwste advertenties</h2>
+      <div class="listing-grid" id="listing-container">
+        <!-- Dinamik ilanlar buraya gelecek -->
+      </div>
     </section>
   </main>
+
   <footer>
-    <p>&copy; 2025 VindHetOnline.be</p>
+    <p>© 2025 Vindhet Online</p>
   </footer>
+
   <script src="app.js"></script>
 </body>
 </html>
