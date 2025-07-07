@@ -7,134 +7,122 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
     }
-    .listing {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-radius: 10px;
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 32px;
     }
-    .listing img {
-      max-width: 200px;
-      height: auto;
-      border-radius: 8px;
+
+    .categorie-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px;
+      gap: 10px;
     }
-    .filter-buttons {
-      margin-bottom: 20px;
-    }
-    .filter-buttons button {
-      margin-right: 10px;
-      padding: 10px 15px;
-      cursor: pointer;
+
+    .categorie-buttons button {
+      padding: 10px 16px;
+      font-size: 16px;
       border: none;
       background-color: #007bff;
-      color: white;
-      border-radius: 5px;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-    .filter-buttons button.active {
+
+    .categorie-buttons button:hover {
       background-color: #0056b3;
+    }
+
+    .advertentie {
+      background-color: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 600px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .advertentie img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .advertentie h2 {
+      margin: 10px 0 5px;
+      font-size: 22px;
+    }
+
+    .advertentie p {
+      margin: 5px 0;
+    }
+
+    #geen-resultaten {
+      text-align: center;
+      font-style: italic;
+      color: #888;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
+
   <h1>Advertenties</h1>
 
-  <div class="filter-buttons">
-    <button data-category="Alles" class="active">Alles</button>
-    <button data-category="Auto">Auto</button>
-    <button data-category="Vastgoed">Vastgoed</button>
-    <button data-category="Elektronica">Elektronica</button>
-    <button data-category="Kleding">Kleding</button>
-    <button data-category="Meubels">Meubels</button>
-    <button data-category="Speelgoed">Speelgoed</button>
-    <button data-category="Tuin">Tuin</button>
-    <button data-category="Huisdieren">Huisdieren</button>
-    <button data-category="Muziekinstrumenten">Muziekinstrumenten</button>
-    <button data-category="Overig">Overig</button>
+  <div class="categorie-buttons">
+    <button onclick="toonAdvertenties('Alle')">Alle</button>
+    <button onclick="toonAdvertenties('Auto')">Auto</button>
+    <button onclick="toonAdvertenties('Vastgoed')">Vastgoed</button>
+    <button onclick="toonAdvertenties('Elektronica')">Elektronica</button>
+    <button onclick="toonAdvertenties('Kleding')">Kleding</button>
+    <button onclick="toonAdvertenties('Meubels')">Meubels</button>
+    <button onclick="toonAdvertenties('Speelgoed')">Speelgoed</button>
+    <button onclick="toonAdvertenties('Tuin')">Tuin</button>
+    <button onclick="toonAdvertenties('Huisdieren')">Huisdieren</button>
+    <button onclick="toonAdvertenties('Muziekinstrumenten')">Muziekinstrumenten</button>
+    <button onclick="toonAdvertenties('Overig')">Overig</button>
   </div>
 
-  <div id="listing-container"></div>
+  <div id="advertenties-container"></div>
+  <div id="geen-resultaten" style="display: none;">Geen advertenties gevonden.</div>
 
   <script>
-    const listings = [
+    const advertenties = [
       {
-        title: "Volkswagen Golf 2015",
-        description: "Goed onderhouden auto met lage kilometers.",
-        category: "Auto",
-        image: "https://via.placeholder.com/200x120?text=Auto"
+        titel: "iPhone 13 Pro",
+        beschrijving: "Zo goed als nieuw, inclusief doos en accessoires.",
+        categorie: "Elektronica",
+        afbeelding: "https://via.placeholder.com/600x400?text=iPhone+13+Pro"
       },
       {
-        title: "2-kamer appartement te huur",
-        description: "Centrum van Antwerpen, volledig gemeubileerd.",
-        category: "Vastgoed",
-        image: "https://via.placeholder.com/200x120?text=Appartement"
+        titel: "2-kamer appartement te huur",
+        beschrijving: "Centrum van Antwerpen, volledig gemeubileerd.",
+        categorie: "Vastgoed",
+        afbeelding: "https://via.placeholder.com/600x400?text=Appartement"
       },
       {
-        title: "iPhone 13 Pro",
-        description: "Zo goed als nieuw, inclusief doos en accessoires.",
-        category: "Elektronica",
-        image: "https://via.placeholder.com/200x120?text=Telefoon"
-      },
-      {
-        title: "Gitaar Yamaha F310",
-        description: "Perfect voor beginners, in uitstekende staat.",
-        category: "Muziekinstrumenten",
-        image: "https://via.placeholder.com/200x120?text=Gitaar"
-      },
-      {
-        title: "Houten eettafel",
-        description: "Massief hout, 6 personen, nauwelijks gebruikt.",
-        category: "Meubels",
-        image: "https://via.placeholder.com/200x120?text=Tafel"
-      },
-      {
-        title: "Winterjas heren",
-        description: "Waterdicht, maat L, donkerblauw.",
-        category: "Kleding",
-        image: "https://via.placeholder.com/200x120?text=Jas"
-      },
-      {
-        title: "Labrador pup",
-        description: "8 weken oud, gevaccineerd en ontwormd.",
-        category: "Huisdieren",
-        image: "https://via.placeholder.com/200x120?text=Puppy"
+        titel: "Opel Astra 2015",
+        beschrijving: "Zeer goed onderhouden, benzine, handgeschakeld.",
+        categorie: "Auto",
+        afbeelding: "https://via.placeholder.com/600x400?text=Opel+Astra"
       }
     ];
 
-    const container = document.getElementById('listing-container');
-    const buttons = document.querySelectorAll('.filter-buttons button');
-
-    function renderListings(category = "Alles") {
+    function toonAdvertenties(categorie) {
+      const container = document.getElementById("advertenties-container");
+      const geenResultaten = document.getElementById("geen-resultaten");
       container.innerHTML = "";
-      const filtered = category === "Alles" ? listings : listings.filter(l => l.category === category);
-      if (filtered.length === 0) {
-        container.innerHTML = "<p>Geen advertenties gevonden.</p>";
-        return;
-      }
 
-      filtered.forEach(listing => {
-        const div = document.createElement('div');
-        div.className = "listing";
-        div.innerHTML = `
-          <img src="${listing.image}" alt="${listing.title}" />
-          <h3>${listing.title}</h3>
-          <p>${listing.description}</p>
-          <strong>Categorie:</strong> ${listing.category}
-        `;
-        container.appendChild(div);
-      });
-    }
+      let gefilterd = categorie === "Alle" ? advertenties : advertenties.filter(ad => ad.categorie === categorie);
 
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderListings(btn.getAttribute('data-category'));
-      });
-    });
-
-    renderListings(); // default
-  </script>
-</body>
-</html>
+      if (gefilterd.length
