@@ -1,30 +1,24 @@
 [
   {
-    "titel": "Samsung Galaxy S21",
-    "beschrijving": "Perfecte staat, met originele doos",
-    "prijs": 350,
-    "categorie": "Elektronica",
-    "foto": "https://via.placeholder.com/300x200?text=Samsung+S21"
+    "id": 1,
+    "category": "Auto",
+    "title": "Audi A4 2018",
+    "brand": "Audi",
+    "model": "A4",
+    "year": 2018,
+    "transmission": "Automatisch",
+    "price": 15000,
+    "image": "img/audi.jpg"
   },
   {
-    "titel": "IKEA Eetkamerstoel",
-    "beschrijving": "Nauwelijks gebruikt",
-    "prijs": 25,
-    "categorie": "Meubels",
-    "foto": "https://via.placeholder.com/300x200?text=Stoel"
-  },
-  {
-    "titel": "Gitaar Yamaha",
-    "beschrijving": "Akoestisch, zeer goede conditie",
-    "prijs": 120,
-    "categorie": "Muziekinstrumenten",
-    "foto": "https://via.placeholder.com/300x200?text=Gitaar"
-  },
-  {
-    "titel": "Tuinbank",
-    "beschrijving": "Houten tuinbank voor 3 personen",
-    "prijs": 45,
-    "categorie": "Tuin",
-    "foto": "https://via.placeholder.com/300x200?text=Tuinbank"
+    "id": 2,
+    "category": "Elektronica",
+    "title": "Samsung GSM S22",
+    "brand": "Samsung",
+    "model": "S22",
+    "year": 2022,
+    "transmission": "",
+    "price": 500,
+    "image": "img/samsung.jpg"
   }
 ]
