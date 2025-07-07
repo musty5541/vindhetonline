@@ -1,100 +1,140 @@
-<!DOCTYPE html>
-<html lang="nl">
+<!DOCTYPE html><html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VindHetOnline - Advertenties</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    body { font-family: sans-serif; padding: 1rem; background: #f2f2f2; }
-    h1 { text-align: center; }
-    .filters { text-align: center; margin-bottom: 1rem; }
-    .ad { background: #fff; padding: 1rem; margin: 0.5rem auto; border-radius: 10px; max-width: 600px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    input, select { padding: 0.5rem; margin: 0.3rem; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #004aad;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    #ads-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .ad-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .ad-card:hover {
+      transform: scale(1.02);
+    }
+    .ad-card img {
+      width: 100%;
+      border-radius: 6px;
+    }
+    .filters {
+      padding: 1rem;
+      background: white;
+      margin: 1rem;
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .filters input, .filters select {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 120px;
+    }
   </style>
 </head>
 <body>
-  <h1>Advertenties</h1>
-  <div class="filters">
+  <header>
+    <h1>VindHetOnline Advertenties</h1>
+  </header>  <section class="filters">
+    <input type="text" id="searchInput" placeholder="Zoek...">
     <select id="categoryFilter">
-      <option value="">Alle Categorieën</option>
-      <option value="Auto's">Auto's</option>
-      <option value="Vastgoed">Vastgoed</option>
+      <option value="">Alle categorieën</option>
+      <option value="Auto">Auto</option>
       <option value="Elektronica">Elektronica</option>
+      <option value="Vastgoed">Vastgoed</option>
       <option value="Kleding">Kleding</option>
       <option value="Meubels">Meubels</option>
       <option value="Tuin">Tuin</option>
       <option value="Dieren">Dieren</option>
-      <option value="Speelgoed">Speelgoed</option>
       <option value="Muziekinstrumenten">Muziekinstrumenten</option>
       <option value="Overig">Overig</option>
     </select>
-    <input type="text" id="searchBox" placeholder="Zoek bijv. Samsung, Audi..." />
-  </div>
-  <div id="adsContainer">Laden...</div>
-<script>
-  async function fetchAds() {
-    const adsContainer = document.getElementById('adsContainer');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const searchBox = document.getElementById('searchBox');
+  </section>  <div id="ads-container">Laden...</div>  <script>
+    let allAds = [];
 
-    adsContainer.innerHTML = 'Laden...';
-
-    try {
-      const res = await fetch('data/listings.json');
-      const ads = await res.json();
-
-      const categories = [...new Set(ads.map(ad => ad.categorie))];
-      categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat;
-        categoryFilter.appendChild(option);
-      });
-
-      function renderAds() {
-        const selectedCat = categoryFilter.value;
-        const searchTerm = searchBox.value.toLowerCase();
-        const filtered = ads.filter(ad => {
-  const matchCategory = selectedCategory === "" || ad.categorie === selectedCategory;
-  const matchSearch = ad.titel.toLowerCase().includes(searchText);
-  return matchCategory && matchSearch;
-});
-          (selectedCat === '' || ad.categorie === selectedCat) &&
-          (ad.titel.toLowerCase().includes(searchTerm) || ad.beschrijving.toLowerCase().includes(searchTerm))
-        );
-
-        adsContainer.innerHTML = '';
-        if (filtered.length === 0) {
-          adsContainer.innerHTML = '<p>Geen resultaten gevonden.</p>';
-          return;
-        }
-
-        filtered.forEach(ad => {
-          const div = document.createElement('div');
-          div.className = 'ad';
-          div.innerHTML = `
-            <h3>${ad.titel}</h3>
-            <p><strong>Categorie:</strong> ${ad.categorie}</p>
-            <p>${ad.beschrijving}</p>
-            <p><strong>Prijs:</strong> €${ad.prijs}</p>
-            ${ad.foto ? `<img src="${ad.foto}" style="max-width:100%; border-radius:10px;" />` : ''}
-          `;
-          adsContainer.appendChild(div);
+    function fetchAds() {
+      fetch("data/listings.json")
+        .then(res => res.json())
+        .then(data => {
+          allAds = data;
+          renderAds();
         });
+    }
+
+    function renderAds(filtered = allAds) {
+      const container = document.getElementById("ads-container");
+      container.innerHTML = "";
+
+      if (filtered.length === 0) {
+        container.innerHTML = "Geen advertenties gevonden.";
+        return;
       }
 
-      categoryFilter.addEventListener('change', renderAds);
-      searchBox.addEventListener('input', renderAds);
-
-      renderAds();
-
-    } catch (err) {
-      adsContainer.innerHTML = '<p>Fout bij het laden van advertenties.</p>';
-      console.error(err);
+      filtered.forEach(ad => {
+        const card = document.createElement("div");
+        card.className = "ad-card";
+        card.innerHTML = `
+          <img src="${ad.image}" alt="${ad.title}" />
+          <h3>${ad.title}</h3>
+          <p><strong>Merk:</strong> ${ad.brand || "-"}</p>
+          <p><strong>Model:</strong> ${ad.model || "-"}</p>
+          <p><strong>Bouwjaar:</strong> ${ad.year || "-"}</p>
+          <p><strong>Prijs:</strong> €${ad.price}</p>
+        `;
+        container.appendChild(card);
+      });
     }
-  }
 
-  fetchAds();
-</script>
-</body>
+    document.getElementById("searchInput").addEventListener("input", () => {
+      const val = document.getElementById("searchInput").value.toLowerCase();
+      const cat = document.getElementById("categoryFilter").value;
+      const filtered = allAds.filter(ad => {
+        return (
+          (!cat || ad.category === cat) &&
+          (ad.title.toLowerCase().includes(val) ||
+           ad.brand?.toLowerCase().includes(val) ||
+           ad.model?.toLowerCase().includes(val))
+        );
+      });
+      renderAds(filtered);
+    });
+
+    document.getElementById("categoryFilter").addEventListener("change", () => {
+      const val = document.getElementById("searchInput").value.toLowerCase();
+      const cat = document.getElementById("categoryFilter").value;
+      const filtered = allAds.filter(ad => {
+        return (
+          (!cat || ad.category === cat) &&
+          (ad.title.toLowerCase().includes(val) ||
+           ad.brand?.toLowerCase().includes(val) ||
+           ad.model?.toLowerCase().includes(val))
+        );
+      });
+      renderAds(filtered);
+    });
+
+    fetchAds();
+  </script></body>
 </html>
