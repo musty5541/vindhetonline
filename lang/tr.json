@@ -1,1 +1,8 @@
-
+{
+  "welcome": "VindhetOnline'a Hoş Geldin",
+  "login": "Giriş Yap",
+  "email": "E-posta",
+  "password": "Şifre",
+  "submit": "Giriş",
+  "recent": "Son Eklenen İlanlar"
+}
