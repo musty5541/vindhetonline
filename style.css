@@ -1,51 +1,8 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f8f8;
-  margin: 0;
-  padding: 0;
-  color: #333;
+  background: #f8f9fa;
 }
 
-header {
-  background-color: #0077cc;
-  color: white;
-  padding: 2rem;
-  text-align: center;
-}
-
-.categorieën {
-  padding: 2rem;
-  text-align: center;
-}
-
-.categorie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.categorie {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-decoration: none;
-  color: #0077cc;
-  font-size: 1.2rem;
-  transition: transform 0.2s;
-}
-
-.categorie:hover {
-  transform: scale(1.05);
-  background-color: #eef6ff;
-}
-
-footer {
-  background-color: #f0f0f0;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: #666;
+.card img {
+  object-fit: cover;
+  height: 150px;
 }
