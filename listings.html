@@ -54,7 +54,11 @@
       function renderAds() {
         const selectedCat = categoryFilter.value;
         const searchTerm = searchBox.value.toLowerCase();
-        const filtered = ads.filter(ad =>
+        const filtered = ads.filter(ad => {
+  const matchCategory = selectedCategory === "" || ad.categorie === selectedCategory;
+  const matchSearch = ad.titel.toLowerCase().includes(searchText);
+  return matchCategory && matchSearch;
+});
           (selectedCat === '' || ad.categorie === selectedCat) &&
           (ad.titel.toLowerCase().includes(searchTerm) || ad.beschrijving.toLowerCase().includes(searchTerm))
         );
