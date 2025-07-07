@@ -1,1 +1,47 @@
-
+[
+  {
+    "id": 1,
+    "titel": "Audi A4 2018 - Automaat",
+    "categorie": "Auto",
+    "merk": "Audi",
+    "model": "A4",
+    "bouwjaar": "2018",
+    "transmissie": "Automatisch",
+    "kilometerstand": "75000",
+    "brandstof": "Benzine",
+    "prijs": "15950",
+    "afbeeldingen": [
+      "https://example.com/audi-a4.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "titel": "Samsung Galaxy S21 - 128GB",
+    "categorie": "Elektronica",
+    "merk": "Samsung",
+    "model": "Galaxy S21",
+    "bouwjaar": "2021",
+    "transmissie": "",
+    "kilometerstand": "",
+    "brandstof": "",
+    "prijs": "450",
+    "afbeeldingen": [
+      "https://example.com/samsung-s21.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "titel": "IKEA Hoekbank - Donkergrijs",
+    "categorie": "Meubels",
+    "merk": "IKEA",
+    "model": "KIVIK",
+    "bouwjaar": "2020",
+    "transmissie": "",
+    "kilometerstand": "",
+    "brandstof": "",
+    "prijs": "250",
+    "afbeeldingen": [
+      "https://example.com/kivik-bank.jpg"
+    ]
+  }
+]
