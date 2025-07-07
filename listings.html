@@ -71,70 +71,55 @@
       <option value="Muziekinstrumenten">Muziekinstrumenten</option>
       <option value="Overig">Overig</option>
     </select>
-  </section>  <div id="ads-container">Laden...</div>  <script>
-    let allAds = [];
+  </section>  <div id="ads-container">Laden...</div>  
+ <script>
+async function fetchAds() {
+  const res = await fetch('data/listings.json');
+  const ads = await res.json();
+  const adsContainer = document.getElementById('ads-container');
+  const searchBox = document.getElementById('searchBox');
+  const categoryFilter = document.getElementById('categoryFilter');
 
-    function fetchAds() {
-      fetch("data/listings.json")
-        .then(res => res.json())
-        .then(data => {
-          allAds = data;
-          renderAds();
-        });
-    }
+  function renderAds() {
+    const searchValue = searchBox.value.toLowerCase();
+    const selectedCategory = categoryFilter.value;
 
-    function renderAds(filtered = allAds) {
-      const container = document.getElementById("ads-container");
-      container.innerHTML = "";
-
-      if (filtered.length === 0) {
-        container.innerHTML = "Geen advertenties gevonden.";
-        return;
-      }
-
-      filtered.forEach(ad => {
-        const card = document.createElement("div");
-        card.className = "ad-card";
-        card.innerHTML = `
-          <img src="${ad.image}" alt="${ad.title}" />
-          <h3>${ad.title}</h3>
-          <p><strong>Merk:</strong> ${ad.brand || "-"}</p>
-          <p><strong>Model:</strong> ${ad.model || "-"}</p>
-          <p><strong>Bouwjaar:</strong> ${ad.year || "-"}</p>
-          <p><strong>Prijs:</strong> €${ad.price}</p>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    document.getElementById("searchInput").addEventListener("input", () => {
-      const val = document.getElementById("searchInput").value.toLowerCase();
-      const cat = document.getElementById("categoryFilter").value;
-      const filtered = allAds.filter(ad => {
-        return (
-          (!cat || ad.category === cat) &&
-          (ad.title.toLowerCase().includes(val) ||
-           ad.brand?.toLowerCase().includes(val) ||
-           ad.model?.toLowerCase().includes(val))
-        );
-      });
-      renderAds(filtered);
+    const filteredAds = ads.filter(ad => {
+      const matchesCategory = selectedCategory === "" || ad.categorie === selectedCategory;
+      const matchesSearch =
+        ad.titel.toLowerCase().includes(searchValue) ||
+        (ad.merk && ad.merk.toLowerCase().includes(searchValue)) ||
+        (ad.model && ad.model.toLowerCase().includes(searchValue));
+      return matchesCategory && matchesSearch;
     });
 
-    document.getElementById("categoryFilter").addEventListener("change", () => {
-      const val = document.getElementById("searchInput").value.toLowerCase();
-      const cat = document.getElementById("categoryFilter").value;
-      const filtered = allAds.filter(ad => {
-        return (
-          (!cat || ad.category === cat) &&
-          (ad.title.toLowerCase().includes(val) ||
-           ad.brand?.toLowerCase().includes(val) ||
-           ad.model?.toLowerCase().includes(val))
-        );
-      });
-      renderAds(filtered);
-    });
+    adsContainer.innerHTML = "";
 
-    fetchAds();
-  </script></body>
+    if (filteredAds.length === 0) {
+      adsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
+      return;
+    }
+
+    filteredAds.forEach(ad => {
+      const div = document.createElement("div");
+      div.className = "ad";
+      div.innerHTML = `
+        <img src="${ad.foto}" alt="${ad.titel}" style="width: 100%; height: auto;" />
+        <h2>${ad.titel}</h2>
+        <p><strong>Merk:</strong> ${ad.merk || ""}</p>
+        <p><strong>Model:</strong> ${ad.model || ""}</p>
+        <p><strong>Bouwjaar:</strong> ${ad.jaar || ""}</p>
+        <p><strong>Prijs:</strong> €${ad.prijs}</p>
+      `;
+      adsContainer.appendChild(div);
+    });
+  }
+
+  searchBox.addEventListener("input", renderAds);
+  categoryFilter.addEventListener("change", renderAds);
+
+  renderAds();
+}
+fetchAds();
+</script> </body>
 </html>
