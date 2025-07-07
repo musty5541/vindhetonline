@@ -1,27 +1,65 @@
-.topbar {
+.main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
   background-color: #2a2a72;
   color: white;
+  padding: 1rem;
+  flex-wrap: wrap;
 }
 
-.login-mini {
+.logo-area h1 {
+  margin: 0;
+}
+
+.lang-login {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
+  align-items: center;
 }
 
 .login-mini input {
-  padding: 0.3rem;
+  padding: 0.4rem;
   font-size: 0.8rem;
 }
 
 .login-mini button {
-  padding: 0.3rem 0.6rem;
+  padding: 0.4rem 0.7rem;
   font-size: 0.8rem;
-  background-color: #fff;
+  background: white;
   color: #2a2a72;
   border: none;
   cursor: pointer;
+  border-radius: 3px;
+}
+
+.main-nav {
+  background: #1d1d4f;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.main-nav a {
+  color: white;
+  margin: 0 1rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lang-login {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .login-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
 }
