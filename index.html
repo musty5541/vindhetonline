@@ -1,31 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vindhet Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
-  <header>
-    <div class="topbar">
-      <h1 id="welcome-text">Welkom</h1>
+  <header class="main-header">
+    <div class="logo-area">
+      <h1 id="welcome-text">Welkom bij VindhetOnline</h1>
+    </div>
+    <div class="lang-login">
+      <select onchange="changeLang(this.value)">
+        <option value="nl">Nederlands</option>
+        <option value="tr">Türkçe</option>
+        <option value="en">English</option>
+      </select>
       <div class="login-mini">
         <input type="email" id="email" placeholder="E-mail" />
         <input type="password" id="password" placeholder="Wachtwoord" />
         <button onclick="login()" id="login-btn">Inloggen</button>
       </div>
     </div>
-    <nav>
-      <a href="#">Plaats advertentie</a>
-      <a href="#">Berichten</a>
-      <a href="#">Uitloggen</a>
-      <select onchange="changeLang(this.value)">
-        <option value="nl">Nederlands</option>
-        <option value="tr">Türkçe</option>
-        <option value="en">English</option>
-      </select>
-    </nav>
   </header>
+
+  <nav class="main-nav">
+    <a href="#">Plaats advertentie</a>
+    <a href="#">Berichten</a>
+    <a href="#">Uitloggen</a>
+  </nav>
 
   <main>
     <section class="recent-listings">
       <h2>Nieuwste advertenties</h2>
       <div class="listing-grid" id="listing-container">
-        <!-- Dinamik ilanlar buraya gelecek -->
+        <!-- JSON'den dinamik ilanlar burada gösterilecek -->
       </div>
     </section>
   </main>
+
+  <footer>
+    <p>© 2025 Vindhet Online</p>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
+</html>
