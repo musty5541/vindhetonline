@@ -7,44 +7,57 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="listings.html?category=Auto">
-  <button style="padding: 10px">🔍 Auto's filteren</button>
-</a>
+
+  <!-- Sadece 'Auto' kategorisini filtreleyen buton -->
+  <a href="listings.html?category=Auto">
+    <button style="padding: 10px; background-color: green; color: white;">
+      🔍 Auto's filteren
+    </button>
+  </a>
+
   <header>
     <h1>VindHetOnline.be</h1>
-    <nav><a href="listings.html"Tüm ilanlar</a>
+    <nav>
       <a href="index.html">Home</a>
       <a href="advertentie.html">Plaats een advertentie</a>
-      <a href="Over-ons.html"</a>
+      <a href="listings.html">Tüm İlanlar</a>
     </nav>
   </header>
+
   <main>
     <section id="search">
       <input type="text" placeholder="Wat zoek je?">
       <button>Zoek</button>
     </section>
+
     <section id="listings">
       <h2>Recente Advertenties</h2>
       <div class="ad">Voorbeeld advertentie 1</div>
       <div class="ad">Voorbeeld advertentie 2</div>
     </section>
-  </main><section id="categories" style="margin: 20px;">
-<div class="categories">
-  <a href="listings.html?categorie=Auto">🚗 Auto</a>
-  <a href="listings.html?categorie=Vastgoed">🏡 Vastgoed</a>
-  <a href="listings.html?categorie=Elektronica">📱 Elektronica</a>
-  <a href="listings.html?categorie=Kleding">👗 Kleding</a>
-  <a href="listings.html?categorie=Meubels">🛋️ Meubels</a>
-  <a href="listings.html?categorie=Speelgoed">🧸 Speelgoed</a>
-  <a href="listings.html?categorie=Tuin">🌳 Tuin</a>
-  <a href="listings.html?categorie=Huisdieren">🐶 Huisdieren</a>
-  <a href="listings.html?categorie=Muziekinstrumenten">🎸 Muziekinstrumenten</a>
-  <a href="listings.html?categorie=Overig">📦 Overig</a>
-</div>
-</section>
+
+    <!-- Kategori linkleri -->
+    <section id="categories">
+      <h2>📌 Populaire Categorieën</h2>
+      <div class="categories">
+        <a href="listings.html?category=Auto">🚗 Auto</a>
+        <a href="listings.html?category=Vastgoed">🏡 Vastgoed</a>
+        <a href="listings.html?category=Elektronica">📱 Elektronica</a>
+        <a href="listings.html?category=Kleding">👗 Kleding</a>
+        <a href="listings.html?category=Meubels">🛋️ Meubels</a>
+        <a href="listings.html?category=Speelgoed">🧸 Speelgoed</a>
+        <a href="listings.html?category=Tuin">🌳 Tuin</a>
+        <a href="listings.html?category=Huisdieren">🐶 Huisdieren</a>
+        <a href="listings.html?category=Muziekinstrumenten">🎸 Muziekinstrumenten</a>
+        <a href="listings.html?category=Overig">📦 Overig</a>
+      </div>
+    </section>
+  </main>
+
   <footer>
     <p>&copy; 2025 VindHetOnline.be</p>
   </footer>
+
   <script src="app.js"></script>
 </body>
 </html>
