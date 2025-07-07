@@ -1,23 +1,112 @@
-
 body {
-  font-family: Arial, sans-serif;
-  background-color: #eef2f5;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #f5f7fa;
+  color: #333;
 }
-header {
-  background-color: #0077cc;
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a2a72;
   color: white;
-  padding: 20px;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.logo-area h1 {
+  margin: 0;
+}
+
+.lang-login {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.login-mini input {
+  padding: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.login-mini button {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  background: white;
+  color: #2a2a72;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+select {
+  padding: 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.main-nav {
+  background: #1d1d4f;
+  padding: 0.5rem;
   text-align: center;
 }
-nav a {
-  margin: 0 10px;
+
+.main-nav a {
   color: white;
+  margin: 0 1rem;
   text-decoration: none;
+  font-weight: bold;
 }
-#ad {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px 0;
+
+.recent-listings {
+  padding: 2rem;
+  background-color: #fff;
 }
+
+.recent-listings h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.listing-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.listing-card {
+  width: 200px;
+  background: #eaeaea;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.listing-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lang-login {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .login-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
