@@ -1,97 +1,97 @@
-<!DOCTYPE html><html lang="nl">
+<!DOCTYPE html>
+<html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advertenties - VindHetOnline</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VindHetOnline - Advertenties</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
-    h1 {
-      text-align: center;
-      padding: 1rem;
-    }
-    .filters, .ads {
-      max-width: 900px;
-      margin: auto;
-      padding: 1rem;
-    }
-    .filters input {
-      width: 100%;
-      padding: 0.7rem;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-    .ad {
-      background: white;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .ad h3 {
-      margin: 0 0 0.5rem;
-    }
+    body { font-family: sans-serif; padding: 1rem; background: #f2f2f2; }
+    h1 { text-align: center; }
+    .filters { text-align: center; margin-bottom: 1rem; }
+    .ad { background: #fff; padding: 1rem; margin: 0.5rem auto; border-radius: 10px; max-width: 600px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    input, select { padding: 0.5rem; margin: 0.3rem; }
   </style>
 </head>
 <body>
   <h1>Advertenties</h1>
   <div class="filters">
-    <input type="text" id="searchBox" placeholder="Zoek bijvoorbeeld: Samsung GSM">
+    <select id="categoryFilter">
+      <option value="">Alle Categorieën</option>
+      <option value="Auto's">Auto's</option>
+      <option value="Vastgoed">Vastgoed</option>
+      <option value="Elektronica">Elektronica</option>
+      <option value="Kleding">Kleding</option>
+      <option value="Meubels">Meubels</option>
+      <option value="Tuin">Tuin</option>
+      <option value="Dieren">Dieren</option>
+      <option value="Speelgoed">Speelgoed</option>
+      <option value="Muziekinstrumenten">Muziekinstrumenten</option>
+      <option value="Overig">Overig</option>
+    </select>
+    <input type="text" id="searchBox" placeholder="Zoek bijv. Samsung, Audi..." />
   </div>
-  <div class="ads" id="adsContainer"></div>  <script>
-    const ads = [
-      { titel: "Audi A4 2015", categorie: "Auto's", beschrijving: "Zeer nette Audi A4", zoekwoorden: ["audi", "a4", "auto"] },
-      { titel: "Samsung Galaxy S21", categorie: "Elektronica", beschrijving: "Nieuwe staat", zoekwoorden: ["samsung", "gsm", "telefoon"] },
-      { titel: "Houten Eettafel", categorie: "Meubels", beschrijving: "Massief houten tafel", zoekwoorden: ["tafel", "eetkamer"] },
-      { titel: "Gitaar Yamaha", categorie: "Muziekinstrumenten", beschrijving: "Akoestisch", zoekwoorden: ["gitaar", "muziek"] },
-      { titel: "Jurk Blauw", categorie: "Kleding", beschrijving: "Maat M, als nieuw", zoekwoorden: ["jurk", "kleding", "blauw"] },
-    ];
+  <div id="adsContainer">Laden...</div>
 
-    const container = document.getElementById("adsContainer");
-    const searchQuery = localStorage.getItem("searchQuery")?.toLowerCase() || "";
-    const selectedCategory = localStorage.getItem("selectedCategory") || "";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    document.getElementById("searchBox").value = searchQuery;
+    const firebaseConfig = {
+      apiKey: "AIzaSyD1p5-6u1LKnMZDPAWRSPZ18Y1R8mxFjns",
+      authDomain: "vindhetonline.firebaseapp.com",
+      projectId: "vindhetonline",
+      storageBucket: "vindhetonline.appspot.com",
+      messagingSenderId: "182903117254",
+      appId: "1:182903117254:web:84dfdbcc01052b676b54d7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const adsContainer = document.getElementById("adsContainer");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const searchBox = document.getElementById("searchBox");
+
+    let allAds = [];
+
+    async function fetchAds() {
+      const adsSnapshot = await getDocs(collection(db, "ads"));
+      allAds = adsSnapshot.docs.map(doc => doc.data());
+      renderAds();
+    }
 
     function renderAds() {
-      container.innerHTML = "";
-      let filtered = ads;
+      const search = searchBox.value.toLowerCase();
+      const category = categoryFilter.value;
+      const filtered = allAds.filter(ad =>
+        (!category || ad.category === category) &&
+        (!search || ad.title.toLowerCase().includes(search))
+      );
 
-      if (selectedCategory) {
-        filtered = filtered.filter(ad => ad.categorie === selectedCategory);
-      }
-      if (searchQuery) {
-        filtered = filtered.filter(ad =>
-          ad.titel.toLowerCase().includes(searchQuery) ||
-          ad.beschrijving.toLowerCase().includes(searchQuery) ||
-          ad.zoekwoorden.some(w => w.includes(searchQuery))
-        );
-      }
+      adsContainer.innerHTML = "";
 
       if (filtered.length === 0) {
-        container.innerHTML = "<p>Geen advertenties gevonden.</p>";
+        adsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
         return;
       }
 
       filtered.forEach(ad => {
         const div = document.createElement("div");
         div.className = "ad";
-        div.innerHTML = `<h3>${ad.titel}</h3><p>${ad.beschrijving}</p><small>${ad.categorie}</small>`;
-        container.appendChild(div);
+        div.innerHTML = `
+          <h2>${ad.title}</h2>
+          <p><strong>Categorie:</strong> ${ad.category}</p>
+          <p>${ad.description || ""}</p>
+          ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="foto" style="max-width:100%">` : ""}
+        `;
+        adsContainer.appendChild(div);
       });
     }
 
-    document.getElementById("searchBox").addEventListener("input", e => {
-      localStorage.setItem("searchQuery", e.target.value);
-      renderAds();
-    });
+    categoryFilter.addEventListener("change", renderAds);
+    searchBox.addEventListener("input", renderAds);
 
-    renderAds();
-  </script></body>
+    fetchAds();
+  </script>
+</body>
 </html>
