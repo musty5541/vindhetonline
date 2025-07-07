@@ -3,53 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VindHetOnline.be - Tweedehands en meer</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>VindHetOnline</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .category-link {
+      padding: 15px 25px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .category-link:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>VindHetOnline.be</h1>
-    <p>Vind alles van auto's tot meubels in België</p>
-  </header>
+  <h1>Welkom bij VindHetOnline</h1>
 
-  <section class="categorieën">
-    <h2>Blader op categorie</h2>
-    <div class="categorie-grid">
-      <a href="listings.html?category=autos" class="categorie">
-        🚗 <span>Auto's</span>
-      </a>
-      <a href="listings.html?category=vastgoed" class="categorie">
-        🏠 <span>Vastgoed</span>
-      </a>
-      <a href="listings.html?category=elektronica" class="categorie">
-        💻 <span>Elektronica</span>
-      </a>
-      <a href="listings.html?category=kleding" class="categorie">
-        👗 <span>Kleding</span>
-      </a>
-      <a href="listings.html?category=meubels" class="categorie">
-        🪑 <span>Meubels</span>
-      </a>
-      <a href="listings.html?category=huisdieren" class="categorie">
-        🐶 <span>Huisdieren</span>
-      </a>
-      <a href="listings.html?category=tuin" class="categorie">
-        🌿 <span>Tuin</span>
-      </a>
-      <a href="listings.html?category=speelgoed" class="categorie">
-        🧸 <span>Speelgoed</span>
-      </a>
-      <a href="listings.html?category=muziekinstrumenten" class="categorie">
-        🎸 <span>Muziekinstrumenten</span>
-      </a>
-      <a href="listings.html?category=diversen" class="categorie">
-        📦 <span>Diversen</span>
-      </a>
-    </div>
-  </section>
+  <div class="categories">
+    <a href="#" class="category-link" data-category="Auto's">🚗 Auto's</a>
+    <a href="#" class="category-link" data-category="Vastgoed">🏡 Vastgoed</a>
+    <a href="#" class="category-link" data-category="Elektronica">💻 Elektronica</a>
+    <a href="#" class="category-link" data-category="Kleding">👗 Kleding</a>
+    <a href="#" class="category-link" data-category="Meubels">🪑 Meubels</a>
+    <a href="#" class="category-link" data-category="Tuin">🌿 Tuin</a>
+    <a href="#" class="category-link" data-category="Dieren">🐶 Dieren</a>
+    <a href="#" class="category-link" data-category="Muziekinstrumenten">🎸 Muziekinstrumenten</a>
+    <a href="#" class="category-link" data-category="Overig">📦 Overig</a>
+  </div>
 
-  <footer>
-    <p>&copy; 2025 VindHetOnline.be - Alle rechten voorbehouden</p>
-  </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const categoryLinks = document.querySelectorAll(".category-link");
+
+      categoryLinks.forEach(link => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const selectedCategory = this.dataset.category;
+          localStorage.setItem("selectedCategory", selectedCategory);
+          window.location.href = "listings.html";
+        });
+      });
+    });
+  </script>
 </body>
 </html>
