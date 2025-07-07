@@ -1,46 +1,31 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vindhet Online</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
 <body>
   <header>
-    <h1 id="welcome-text">Welkom</h1>
+    <div class="topbar">
+      <h1 id="welcome-text">Welkom</h1>
+      <div class="login-mini">
+        <input type="email" id="email" placeholder="E-mail" />
+        <input type="password" id="password" placeholder="Wachtwoord" />
+        <button onclick="login()" id="login-btn">Inloggen</button>
+      </div>
+    </div>
     <nav>
       <a href="#">Plaats advertentie</a>
       <a href="#">Berichten</a>
       <a href="#">Uitloggen</a>
+      <select onchange="changeLang(this.value)">
+        <option value="nl">Nederlands</option>
+        <option value="tr">Türkçe</option>
+        <option value="en">English</option>
+      </select>
     </nav>
-    <select onchange="changeLang(this.value)">
-      <option value="nl">Nederlands</option>
-      <option value="tr">Türkçe</option>
-      <option value="en">English</option>
-    </select>
   </header>
 
   <main>
-    <section class="login-box">
-      <h2 id="login-text">Inloggen</h2>
-      <input type="email" placeholder="" id="email" />
-      <input type="password" placeholder="" id="password" />
-      <button id="login-btn" onclick="login()">Inloggen</button>
-    </section>
-
     <section class="recent-listings">
       <h2>Nieuwste advertenties</h2>
       <div class="listing-grid" id="listing-container">
-        <!-- İlan kartları burada otomatik yüklenecek -->
+        <!-- Dinamik ilanlar buraya gelecek -->
       </div>
     </section>
   </main>
-
-  <footer>
-    <p>© 2025 Vindhet Online</p>
-  </footer>
-
-  <script src="app.js"></script>
 </body>
-</html>
