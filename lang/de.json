@@ -1,1 +1,8 @@
-
+{
+  "welcome": "Willkommen bei VindhetOnline",
+  "login": "Anmelden",
+  "email": "E-Mail",
+  "password": "Passwort",
+  "submit": "Einloggen",
+  "recent": "Neueste Anzeigen"
+}
