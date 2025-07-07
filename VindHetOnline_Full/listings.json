@@ -1,1 +1,26 @@
-
+[
+  {
+    "title": "Mountainbike - Zwart/Rood",
+    "price": "€150",
+    "location": "Genk",
+    "image": "https://via.placeholder.com/200x120?text=Mountainbike"
+  },
+  {
+    "title": "Samsung 43\" TV",
+    "price": "€220",
+    "location": "Hasselt",
+    "image": "https://via.placeholder.com/200x120?text=Samsung+TV"
+  },
+  {
+    "title": "Tweepersoonsbed + Matras",
+    "price": "€100",
+    "location": "Brussel",
+    "image": "https://via.placeholder.com/200x120?text=Bed"
+  },
+  {
+    "title": "PlayStation 5 Console",
+    "price": "€399",
+    "location": "Antwerpen",
+    "image": "https://via.placeholder.com/200x120?text=PS5"
+  }
+]
