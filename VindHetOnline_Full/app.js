@@ -10,7 +10,7 @@ function loadLanguage(lang) {
       document.getElementById("password").placeholder = data.password;
       document.getElementById("recent-title").innerText = data.recent;
     })
-    .catch(err => console.error("Taalbestand kon niet worden geladen:", err));
+    .catch(err => console.error("Dil dosyası yüklenemedi:", err));
 }
 
 function changeLang(lang) {
@@ -47,7 +47,7 @@ function loadListings() {
         container.appendChild(card);
       });
     })
-    .catch(err => console.error("Ilanlar yüklenemedi:", err));
+    .catch(err => console.error("İlanlar yüklenemedi:", err));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
